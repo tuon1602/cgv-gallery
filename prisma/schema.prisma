@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int           @id @default(autoincrement())
+  userId    String        @unique
+  password  String
+  avatarUrl String        @default("https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg")
+  name      String
+  role      String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  images    Image[]       @relation("UserImages")
+  comments  UserComment[]
+}
+
+model Image {
+  id          Int           @id @default(autoincrement())
+  title       String
+  imageUrl    String
+  createdBy   User          @relation("UserImages", fields: [createdById], references: [id])
+  createdById Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  userId      String?
+  comments    UserComment[]
+}
+
+model UserComment {
+  id            Int      @id @default(autoincrement())
+  content       String
+  userId        String
+  commentedBy   User     @relation(fields: [userCommentId], references: [id])
+  userCommentId Int
+  image         Image    @relation(fields: [imageId], references: [id])
+  imageId       Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
