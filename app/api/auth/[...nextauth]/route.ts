@@ -8,7 +8,7 @@ import { PrismaClient } from "@prisma/client";
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 3600,
+    maxAge:300
   },
   providers: [
     CredentialsProvider({
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
   secret:process.env.NEXTAUTH_SECRET,
   jwt:{
     secret: process.env.NEXTAUTH_SECRET,
-    maxAge: 3600,
+    maxAge:300
   },
   callbacks:{
     async jwt({token,user}) : Promise<any> {

@@ -19,13 +19,16 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -58,6 +61,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import AvatarDropdown from "../AvatarDropdown";
+import AddUserForm from "./AddUserForm";
+import { revalidateTag } from "next/cache";
+import { toast } from "sonner";
+import { FormEvent, useEffect, useState } from "react";
+import clsx from "clsx";
 
 interface User {
   name: string;
@@ -70,17 +78,53 @@ interface User {
 }
 
 interface IProps {
-  usersData: User[];
-  adminsData : User[];
+  usersData: any;
+  adminsData: User[];
   userFilterData: User[];
 }
 
-const UserContent = ({ usersData ,adminsData,userFilterData}: IProps) => {
-  const router = useRouter();
-  const PushToAddUserPage = () => {
-    router.push("/admin/users/add-user");
+const UserContent = ({ usersData, adminsData, userFilterData }: IProps) => {
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [searchData, setSearchData] = useState<User[]>([]);
+  const handleFindUsers = async (event: FormEvent<HTMLInputElement>) => {
+    const keyword = event.currentTarget.value;
+    setSearchKeyword(keyword);
+    if (keyword.length >= 3) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/search?query=${searchKeyword}`
+      );
+      const data = await res.json();
+      if (data.result.length > 0) {
+        setSearchData(data.result);
+      } else {
+        setSearchData([]);
+      }
+    } else {
+      return;
+    }
   };
-  console.log(userFilterData);
+  const handleConfirmDelete = async (id: number) => {
+    if (confirm("Bạn có chắc là xóa user này không") == true) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user?id=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+      if (data.message === "Deleted") {
+        toast.success("Deleted", {
+          duration: 1500,
+        });
+        router.refresh();
+      } else {
+        toast.error("There was an error deleting");
+      }
+    } else {
+      return null;
+    }
+  };
+  const router = useRouter();
   return (
     <>
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -138,31 +182,14 @@ const UserContent = ({ usersData ,adminsData,userFilterData}: IProps) => {
             </nav>
           </SheetContent>
         </Sheet>
-        {/* <Breadcrumb className="hidden md:flex">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Dashboard</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="#">Products</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>All Products</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb> */}
         <div className="relative mr-auto flex-1 md:grow-0">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search..."
             className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+            onChange={handleFindUsers}
+            // onKeyPress={handleKeyFindUsers}
           />
         </div>
         <AvatarDropdown />
@@ -200,16 +227,7 @@ const UserContent = ({ usersData ,adminsData,userFilterData}: IProps) => {
                   Export
                 </span>
               </Button>
-              <Button
-                size="sm"
-                className="h-8 gap-1"
-                onClick={PushToAddUserPage}
-              >
-                <PlusCircle className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Add User
-                </span>
-              </Button>
+              <AddUserForm />
             </div>
           </div>
           <TabsContent value="all">
@@ -242,59 +260,117 @@ const UserContent = ({ usersData ,adminsData,userFilterData}: IProps) => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {usersData?.map((user, index) => (
-                      <TableRow key={user.id}>
-                        <TableCell className="hidden sm:table-cell">
-                          <Image
-                            alt="Avatar Image"
-                            className="aspect-square rounded-md object-cover"
-                            height="64"
-                            src={`${user.avatarUrl}`}
-                            width="64"
-                          />
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {user.name}
-                        </TableCell>
-                        <TableCell>{user.userId}</TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          <Badge
-                            variant={
-                              user.role === "admin" ? `default` : "outline"
-                            }
-                          >
-                            {user.role}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          25
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          {moment(user.createdAt.toISOString()).format(
-                            "Do MMMM YYYY"
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                aria-haspopup="true"
-                                size="icon"
-                                variant="ghost"
+                    {searchKeyword.length === 0
+                      ? usersData?.users.map((user: any, index: any) => (
+                          <TableRow key={user.id}>
+                            <TableCell className="hidden sm:table-cell">
+                              <Image
+                                alt="Avatar Image"
+                                className="aspect-square rounded-md object-cover"
+                                height="64"
+                                src={`${user.avatarUrl}`}
+                                width="64"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium">
+                              {user.name}
+                            </TableCell>
+                            <TableCell>{user.userId}</TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              <Badge
+                                variant={
+                                  user.role === "admin" ? `default` : "outline"
+                                }
                               >
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Toggle menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
-                              <DropdownMenuItem>Delete</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                                {user.role}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              25
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              {moment(user.createdAt).format("Do MMMM YYYY")}
+                            </TableCell>
+                            <TableCell>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                  >
+                                    <MoreHorizontal className="h-4 w-4" />
+                                    <span className="sr-only">Toggle menu</span>
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleConfirmDelete(user.id)}
+                                  >
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      : searchData.map((user, index) => (
+                          <TableRow key={user.id}>
+                            <TableCell className="hidden sm:table-cell">
+                              <Image
+                                alt="Avatar Image"
+                                className="aspect-square rounded-md object-cover"
+                                height="64"
+                                src={`${user.avatarUrl}`}
+                                width="64"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium">
+                              {user.name}
+                            </TableCell>
+                            <TableCell>{user.userId}</TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              <Badge
+                                variant={
+                                  user.role === "admin" ? `default` : "outline"
+                                }
+                              >
+                                {user.role}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              25
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              {moment(user.createdAt).format("Do MMMM YYYY")}
+                            </TableCell>
+                            <TableCell>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                  >
+                                    <MoreHorizontal className="h-4 w-4" />
+                                    <span className="sr-only">Toggle menu</span>
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleConfirmDelete(user.id)}
+                                  >
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))}
                   </TableBody>
                 </Table>
               </CardContent>

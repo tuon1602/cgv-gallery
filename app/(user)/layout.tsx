@@ -20,17 +20,15 @@ export default async function UserLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect("/login");
-  }
   return (
-    <section>
-      {/* Include shared UI here e.g. a header or sidebar */}
-      <nav>
+    <section className="grid grid-cols-12 min-h-screen">
+      <nav className="grid col-span-2">
         <Navbar />
       </nav>
-      {children}
+      <div className="col-span-10">
+        {children}
+      </div>
+      
     </section>
   );
 }

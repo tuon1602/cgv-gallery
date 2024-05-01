@@ -19,10 +19,6 @@ export default async function LoginLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(authOptions);
-  if (session){
-    redirect("/")
-  }
   return (
     <section>
       {children}

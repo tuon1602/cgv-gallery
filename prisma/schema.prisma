@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -8,28 +9,39 @@ datasource db {
 }
 
 model User {
-  id        Int           @id @default(autoincrement())
-  userId    String        @unique
-  password  String
-  avatarUrl String        @default("https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg")
-  name      String
-  role      String
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  images    Image[]       @relation("UserImages")
-  comments  UserComment[]
+  id          Int           @id @default(autoincrement())
+  userId      String        @unique
+  password    String
+  avatarUrl   String        @default("https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg")
+  name        String
+  role        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  images      Image[]       @relation("UserImages")
+  comments    UserComment[]
+  likedImages Image[]       @relation("LikedBy")
 }
 
 model Image {
   id          Int           @id @default(autoincrement())
   title       String
-  imageUrl    String
+  description String
+  imageUrl    String[] // Changed imageUrl to be an array
   createdBy   User          @relation("UserImages", fields: [createdById], references: [id])
   createdById Int
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   userId      String?
   comments    UserComment[]
+  likes       Int           @default(0)
+  likers      User[]        @relation("LikedBy")
+  tags        Tag[]         @relation("ImageTags")
+}
+
+model Tag {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  images Image[] @relation("ImageTags")
 }
 
 model UserComment {

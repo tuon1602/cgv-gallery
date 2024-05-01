@@ -30,6 +30,7 @@ export default async function RootLayout({
           >
             <main>{children}</main>
             <Toaster richColors position="top-center" closeButton />
+            <ExpiredAlert/>
           </ThemeProvider>
         </body>
       </html>

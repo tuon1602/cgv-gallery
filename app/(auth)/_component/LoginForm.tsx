@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useSession, signIn, signOut } from "next-auth/react";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,27 +14,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const formSchema = z.object({
-  userId: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  password: z.string(),
-});
+import Image from "next/image";
+import Link from "next/link";
 
-const LoginForm = () => {
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { userLoginSchema } from "@/constants/schema";
+
+
+export function LoginForm() {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof userLoginSchema>>({
+    resolver: zodResolver(userLoginSchema),
     defaultValues: {
       userId: "",
       password: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof userLoginSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     const { userId, password } = values;
@@ -45,55 +45,69 @@ const LoginForm = () => {
       redirect: false,
     }).then((res) => {
       if (res?.ok) {
-        toast.success("Đăng nhập thành công",{
-          duration:800
+        toast.success("Đăng nhập thành công", {
+          duration: 800,
         });
         router.push("/");
       } else {
-        toast.error("Tài khoản hoặc mật khẩu không đúng",{
-          duration:500
+        toast.error("Tài khoản hoặc mật khẩu không đúng", {
+          duration: 800,
         });
       }
     });
   }
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="userId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+    <div className="w-full lg:grid lg:min-h-[100vh] lg:grid-cols-2 ">
+      <div className="hidden bg-muted lg:block">
+        <Image
+          src="/placeholder.svg"
+          alt="Image"
+          width="1920"
+          height="1080"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+      </div>
+      <div className="flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[350px] gap-6">
+          <div className="grid gap-2 text-center">
+            <h1 className="text-3xl font-bold">Login</h1>
+            <p className="text-balance text-muted-foreground">
+              Enter your CGV user ID for log in
+            </p>
+          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="userId"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>UserId</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Example: 214925" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit">Login</Button>
+            </form>
+          </Form>
+        </div>
+      </div>
+    </div>
   );
-};
-export default LoginForm;
+}

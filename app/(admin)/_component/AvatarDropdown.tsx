@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import React from "react";
+import { useSession } from "next-auth/react";
 
 const AvatarDropdown = () => {
+  const { data: session, status } = useSession();
+  if (status === "unauthenticated") {
+    return <div>Not found</div>;
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,7 +27,7 @@ const AvatarDropdown = () => {
           className="overflow-hidden rounded-full"
         >
           <Image
-            src="/placeholder-user.jpg"
+            src={session?.user?.avatarUrl}
             width={36}
             height={36}
             alt="Avatar"
@@ -31,12 +36,12 @@ const AvatarDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={()=>signOut()}>Logout</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
