@@ -1,7 +1,7 @@
 "use server";
 import { z } from "zod";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { getURL } from "next/dist/shared/lib/utils";

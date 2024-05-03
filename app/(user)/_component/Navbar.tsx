@@ -5,7 +5,8 @@ import { Home, Heart, CirclePlus, LayoutDashboard } from "lucide-react";
 import LogoutButton from "@/app/components/LogoutButton";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
+
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
   return (

@@ -4,7 +4,8 @@ import AuthProviders from "../providers/AuthProvider";
 import { getServerSession } from "next-auth";
 import { Toaster } from "@/components/ui/sonner";
 import ExpiredAlert from "../components/ExpiredAlert";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
+
 import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });

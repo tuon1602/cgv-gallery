@@ -3,7 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import ThemeToggle from "../components/ThemeToggle";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
+
 import { DatePicking } from "./_component/DatePicking";
 import UserSearch from "./_component/UserSearch";
 import UserFindTags from "./_component/UserFindTags";

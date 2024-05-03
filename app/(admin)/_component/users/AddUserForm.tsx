@@ -111,7 +111,7 @@ export default function AddUserForm() {
           <DialogHeader>
             <DialogTitle>Add User</DialogTitle>
             <DialogDescription>
-              Add a new user here. Click save when you're done.
+              Add a new user here. Click save when you`&apos;`re done.
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>

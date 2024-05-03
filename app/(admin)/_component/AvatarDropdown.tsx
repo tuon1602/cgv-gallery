@@ -27,6 +27,7 @@ const AvatarDropdown = () => {
           className="overflow-hidden rounded-full"
         >
           <Image
+            //@ts-ignore
             src={session?.user?.avatarUrl}
             width={36}
             height={36}
