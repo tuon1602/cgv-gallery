@@ -25,7 +25,7 @@ model User {
 model Image {
   id          Int           @id @default(autoincrement())
   title       String
-  description String
+  description String        @db.Text
   imageUrl    String[] // Changed imageUrl to be an array
   createdBy   User          @relation("UserImages", fields: [createdById], references: [id])
   createdById Int
@@ -46,7 +46,7 @@ model Tag {
 
 model UserComment {
   id            Int      @id @default(autoincrement())
-  content       String
+  content       String   @db.Text
   userId        String
   commentedBy   User     @relation(fields: [userCommentId], references: [id])
   userCommentId Int

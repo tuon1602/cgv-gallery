@@ -12,7 +12,7 @@ const Navbar = async () => {
     <div className="w-base border-r border-r-secondary min-h-screen">
       <div className="sticky top-0 left-0 p-5 space-y-4 flex flex-col justify-between items-start min-h-[100dvh]">
         <div className="space-y-4 flex flex-col items-start">
-          <Image src="/logo.png" alt="logo" width={150} height={150} />
+          <Image src={`/logo.png`} alt="logo" width={150} height={150} />
           <NavRoute
             label="Home"
             route="/"
@@ -25,7 +25,7 @@ const Navbar = async () => {
           />
           <NavRoute
             label="Create"
-            route="/create"
+            route="/create-image"
             icon={<CirclePlus className="size-[30px]" />}
           />
           {session && session?.user?.role === "admin" && (
@@ -33,6 +33,13 @@ const Navbar = async () => {
               label="Admin dashboard"
               route="/admin/dashboard"
               icon={<LayoutDashboard className="size-[30px]" />}
+            />
+          )}
+          {session && (
+            <NavRoute
+              label="Profile"
+              route={`/profile/${session?.user?.userId}`}
+              avatar={session?.user?.avatarUrl}
             />
           )}
         </div>

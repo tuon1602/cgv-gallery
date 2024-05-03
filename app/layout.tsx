@@ -6,6 +6,7 @@ import { Session, getServerSession } from "next-auth";
 import { Toaster } from "@/components/ui/sonner";
 import ExpiredAlert from "./components/ExpiredAlert";
 import { ThemeProvider } from "./providers/ThemeProvider";
+// import "@uploadthing/react/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,8 +30,6 @@ export default async function RootLayout({
             enableSystem
           >
             <main>{children}</main>
-            <Toaster richColors position="top-center" closeButton />
-            <ExpiredAlert/>
           </ThemeProvider>
         </body>
       </html>

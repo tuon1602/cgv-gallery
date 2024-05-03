@@ -10,34 +10,16 @@ export async function GET(
     if (!params.id)
       return NextResponse.json({ status: 404, message: "Missing params" });
 
-    const images = await prisma.image.findUnique({
+    const tag = await prisma.tag.findUnique({
       where: {
         id: parseInt(params.id),
       },
       include: {
-        comments: true,
-        tags: true,
-        createdBy: {
-          select: {
-            id: true,
-            name: true,
-            userId: true,
-            avatarUrl: true,
-            role: true,
-          },
-        },
-        likers: {
-          select: {
-            id: true,
-            userId: true,
-            name: true,
-            avatarUrl: true,
-          },
-        },
+        images: true,
       },
     });
-    if (images) {
-      return NextResponse.json({ status: 200, message: "sucess", images });
+    if (tag) {
+      return NextResponse.json({ status: 200, message: "sucess", tag });
     } else {
       return NextResponse.json({ status: 404, message: "Image not found" });
     }

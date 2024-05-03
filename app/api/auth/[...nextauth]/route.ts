@@ -5,10 +5,30 @@ import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 
+interface Session {
+  user: Token;
+  expires: string;
+}
+
+interface Token {
+  name: string;
+  sub: string;
+  id: number;
+  userId: string;
+  avatarUrl: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
+  iat: number;
+  exp: number;
+  jti: string;
+}
+
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge:300
+    maxAge: 1800, // 30 mins
   },
   providers: [
     CredentialsProvider({
@@ -22,7 +42,7 @@ export const authOptions: NextAuthOptions = {
       },
       /* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/
       // @ts-ignore
-      async authorize(credentials){
+      async authorize(credentials) {
         const user = await prisma.user.findUnique({
           where: {
             userId: credentials?.userId,
@@ -35,28 +55,28 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
           if (passwordMatch) {
-            const {password,...userWithoutPassword} = user
+            const { password, ...userWithoutPassword } = user;
             return userWithoutPassword;
           }
         }
-        return null
+        return null;
       },
     }),
   ],
-  secret:process.env.NEXTAUTH_SECRET,
-  jwt:{
+  secret: process.env.NEXTAUTH_SECRET,
+  jwt: {
     secret: process.env.NEXTAUTH_SECRET,
-    maxAge:300
+    maxAge: 1800, // 30 mins
   },
-  callbacks:{
-    async jwt({token,user}) : Promise<any> {
-      return {...token,...user}
+  callbacks: {
+    async jwt({ token, user }): Promise<any> {
+      return { ...token, ...user };
     },
-    async session({session,token,user}): Promise<any> {
+    async session({ session, token, user }): Promise<any> {
       session.user = token
-      return session
-    }
-  }
+      return session;
+    },
+  },
 };
 
 export const handler = NextAuth(authOptions);
