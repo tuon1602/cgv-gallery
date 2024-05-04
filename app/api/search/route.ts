@@ -5,7 +5,6 @@ import { toLowerCaseNonAccentVietnamese } from "@/helper/convertVNtoEngStr";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const query = searchParams.get("q");
-  console.log(query);
   const date = searchParams.get("date");
   try {
     if (query) {
@@ -32,7 +31,7 @@ export async function GET(req: NextRequest) {
           avatarUrl: true,
           name: true,
         },
-        take: 3,
+        take: 10,
       });
       const images = await prisma.image.findMany({
         where: {
@@ -56,6 +55,7 @@ export async function GET(req: NextRequest) {
         select: {
           id: true,
           userId: true,
+          title:true,
           createdBy: {
             select: {
               id: true,
@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
           },
           imageUrl: true,
         },
-        take: 3,
+        take: 10,
       });
       const result = { users, images };
       return NextResponse.json({ status: 200, message: "Success", result });

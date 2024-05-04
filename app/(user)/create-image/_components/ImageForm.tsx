@@ -12,20 +12,18 @@ import { CardContent, CardFooter, Card } from "@/components/ui/card";
 import { Image as ImageLogo } from "lucide-react";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
-import { useRouter } from "next/navigation";
+import SubmitButton from "./SubmitButton";
 
 const initialState = {
   message: null,
 };
 
 const ImageForm = () => {
-  const router = useRouter();
   const inputImage = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { data: session, status } = useSession();
-  //@ts-ignore 
+  //@ts-ignore
   const [state, formAction] = useFormState(createImage, initialState);
-  const { pending } = useFormStatus();
   const [images, setImages] = useState<File[]>([]);
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedImages = Array.from(event.target.files || []);
@@ -39,7 +37,6 @@ const ImageForm = () => {
     }
     setImages([]);
   };
-
   return (
     <>
       <form
@@ -144,14 +141,7 @@ const ImageForm = () => {
             {state?.message}
           </p>
         )}
-        <button
-          type="submit"
-          disabled={pending}
-          aria-disabled={pending}
-          className="col-span-2 bg-blue-500 text-black"
-        >
-          {pending ? "Creating" : "Create"}
-        </button>
+        <SubmitButton />
       </form>
       <Toaster richColors duration={200} />
     </>
