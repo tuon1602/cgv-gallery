@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { createImage } from "@/app/actions/imageActions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,11 @@ const ImageForm = () => {
     }
     setImages([]);
   };
+  useEffect(() => {
+    if (state && state.message && state.message != "Success") {
+      toast.error(state.message);
+    }
+  }, [state]);
   return (
     <>
       <form
@@ -136,14 +141,14 @@ const ImageForm = () => {
             </CardContent>
           </Card>
         </div>
-        {state?.message != "Created" && (
+        {/* {state?.message != "Created" && (
           <p role="status" className="text-red-500 col-span-2 text-center">
             {state?.message}
           </p>
-        )}
+        )} */}
         <SubmitButton />
       </form>
-      <Toaster richColors duration={200} />
+      <Toaster position="top-center" richColors duration={1000} />
     </>
   );
 };

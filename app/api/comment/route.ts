@@ -3,7 +3,30 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
+  const imageIdQuery = searchParams.get("imageId");
   try {
+    if (imageIdQuery) {
+      const allCommentsByImageId = await prisma.userComment.findMany({
+        where: {
+          imageId: parseInt(imageIdQuery),
+        },
+        include: {
+          commentedBy: {
+            select: {
+              id: true,
+              avatarUrl: true,
+              name: true,
+              role: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({
+        status: 200,
+        message: "sucess",
+        allCommentsByImageId,
+      });
+    }
     const comments = await prisma.userComment.findMany({
       include: {
         commentedBy: {
@@ -90,7 +113,7 @@ export async function PUT(req: NextRequest) {
           id: parseInt(paramsId),
         },
         data: {
-          content:data.content
+          content: data.content,
         },
       });
       return NextResponse.json({ status: 200, message: "updated", res });

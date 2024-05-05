@@ -20,7 +20,7 @@ let postData: any = [];
 let myImages: string[] = [];
 
 export async function getAllImageHomeData() {
-  const res = await fetch(`${process.env.API_URL}/homepage`, {
+  const res = await fetch(`${process.env.API_URL}/image`, {
     method: "GET",
     next: {
       revalidate: 300,
@@ -126,4 +126,19 @@ export async function createImage(prevState: any, formData: FormData) {
     }
   }
   // console.log(rawData.images);
+}
+
+export async function getImageDetail(id:string){
+  const parseId = parseInt(id)
+  const res = await fetch(`${process.env.API_URL}/image/${parseId}`,{
+    method:"GET",
+    next:{
+      tags:["image-details"]
+    }
+  })
+  if(!res.ok){
+    throw new Error("Couldn't get image details")
+  }
+  const data = await res.json()
+  return data
 }

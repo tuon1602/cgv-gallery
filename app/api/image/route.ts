@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
             role: true,
           },
         },
+        comments:true
       },
       orderBy: {
         createdAt: "desc",

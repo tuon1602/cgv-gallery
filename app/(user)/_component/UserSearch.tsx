@@ -61,6 +61,7 @@ const UserSearch = () => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         className="rounded-none focus-visible:ring-0 focus-visible:focus-visible:ring-0"
+        autoFocus
       />
       {value.length > 0 ? (
         <button onClick={handleResetInput}>
@@ -71,7 +72,7 @@ const UserSearch = () => {
       )}
       <div
         className={cn(
-          "absolute min-h-[500px] border border-input bg-background rounded-sm z-[99] w-full top-[100%] border-t-0 rounded-t-none ",
+          "absolute min-h-[500px] max-h-[700px] border border-input bg-background rounded-sm z-[99] w-full top-[100%] border-t-0 rounded-t-none overflow-y-scroll",
           isFocused ? "block" : "hidden",
           value.length === 0 && "hidden"
         )}
@@ -98,7 +99,10 @@ const UserSearch = () => {
                 </div>
                 {searchData?.result?.users.map((user, index) => (
                   <>
-                    <div className="flex items-center gap-5">
+                    <div
+                      className="flex items-center gap-5"
+                      onClick={() => console.log("WTF")}
+                    >
                       <Avatar>
                         <AvatarImage src={user.avatarUrl} alt={user.name} />
                         <AvatarFallback>{user.name}</AvatarFallback>

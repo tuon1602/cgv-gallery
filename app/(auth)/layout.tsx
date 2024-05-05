@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProviders from "../providers/AuthProvider";
-import { getServerSession } from "next-auth";
 import { Toaster } from "@/components/ui/sonner";
 import ExpiredAlert from "../components/ExpiredAlert";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
 import { redirect } from "next/navigation";
@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 export default async function LoginLayout({
   children, // will be a page or nested layout
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return (
-    <section>
-      {children}
-    </section>
-  )
+  const session = await getServerSession(authOptions);
+  if (session) {
+    redirect("/");
+  }
+  return <section>{children}</section>;
 }

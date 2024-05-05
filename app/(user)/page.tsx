@@ -15,6 +15,7 @@ import HomeImages from "./_component/HomeImages";
 export default async function Home() {
   const images = await getAllImageHomeData();
   const session = await getServerSession(authOptions);
+  console.log(images)
   return (
     <main className="w-full p-5 flex flex-col items-center m-auto">
       <section className="flex justify-center items-center gap-10 min-w-[800px]">
@@ -24,7 +25,7 @@ export default async function Home() {
       {/* <section className="mt-10">
         <UserFindTags />
       </section> */}
-      <section className="mt-10">
+      <section className="mt-10 max-w-[1000px]">
         <HomeImages imageData={images}/>
       </section>
     </main>

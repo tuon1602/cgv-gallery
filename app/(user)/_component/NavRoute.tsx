@@ -14,7 +14,7 @@ interface IProps {
 
 const NavRoute = ({ route, label, icon, avatar }: IProps) => {
   return (
-    <Button variant="outline" className="border-0">
+    <Button variant="outline" className="border-0 w-full flex justify-start">
       {avatar && (
         <Image
           src={avatar}
@@ -24,7 +24,7 @@ const NavRoute = ({ route, label, icon, avatar }: IProps) => {
           className="mr-4 rounded-full"
         />
       )}
-      <Link href={route} className="flex items-center gap-4 text-lg">
+      <Link href={route} className="flex gap-4 text-lg">
         {icon}
         {label}
       </Link>
