@@ -6,6 +6,7 @@ export interface Image {
     userId: string;
     avatarUrl: string;
     name: string;
+    role:string
   };
   title: string;
   imageUrl: string[];
@@ -61,6 +62,7 @@ export interface CommentImage {
     avatarUrl: string;
     name: string;
     role: string;
+    userId:string
   };
 }
 export interface IImageComment {

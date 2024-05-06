@@ -66,7 +66,6 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   const url = new URL(req.url);
   const id = url.searchParams.get("id");
-  console.log(id)
   if (id === null) {
     return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
   }

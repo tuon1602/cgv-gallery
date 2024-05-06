@@ -3,6 +3,8 @@ import Modal from "./_components/Modal";
 import PhotoDetails from "./_components/PhotoDetails";
 import { getCommentByImageId } from "@/app/actions/commentActions";
 import { Toaster } from "sonner";
+
+
 export default async function PhotoModal({
   params,
 }: {

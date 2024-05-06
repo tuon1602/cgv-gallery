@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
               avatarUrl: true,
               name: true,
               role: true,
+              userId:true
             },
           },
         },
@@ -35,6 +36,7 @@ export async function GET(req: NextRequest) {
             avatarUrl: true,
             name: true,
             role: true,
+            userId:true
           },
         },
         image: true,

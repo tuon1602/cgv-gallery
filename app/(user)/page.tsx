@@ -12,6 +12,7 @@ import { getAllImageHomeData } from "../actions/imageActions";
 import { notFound } from "next/navigation";
 import HomeImages from "./_component/HomeImages";
 
+
 export default async function Home() {
   const images = await getAllImageHomeData();
   const session = await getServerSession(authOptions);

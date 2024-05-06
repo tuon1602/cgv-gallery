@@ -26,14 +26,6 @@ export async function GET(
             role: true,
           },
         },
-        likers: {
-          select: {
-            id: true,
-            userId: true,
-            name: true,
-            avatarUrl: true,
-          },
-        },
       },
     });
     if (images) {

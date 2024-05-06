@@ -34,6 +34,8 @@ import { IImageComment } from "@/types";
 import { useFormState } from "react-dom";
 import SubmitButton from "./SubmitButton";
 import { toast } from "sonner";
+import LikeButton from "./LikeButton";
+import ImageCarousel from "./ImageCarousel";
 
 interface PhotoDetailsProps {
   imageDetailData: IImageDetail;
@@ -71,19 +73,23 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
   }, [state]);
   useEffect(() => {
     if (state?.message) {
-      setCommentValue("")
+      setCommentValue("");
     }
   }, [state]);
   return (
     <>
       <div className="grid grid-cols-2 w-full h-full items-center text-sm">
         <div className="relative h-full">
-          <Image
-            alt={imageDetailData?.images?.title}
-            src={imageDetailData?.images?.imageUrl[0]}
-            fill
-            className="object-contain"
-          />
+          {imageDetailData?.images?.imageUrl.length > 1 ? (
+            <ImageCarousel images={imageDetailData.images.imageUrl}/>
+          ) : (
+            <Image
+              alt={imageDetailData?.images?.title}
+              src={imageDetailData?.images?.imageUrl[0]}
+              fill
+              className="object-contain"
+            />
+          )}
         </div>
 
         <div className="bg-background w-full h-full px-8 pb-5 pt-5 flex justify-between flex-col">
@@ -107,7 +113,12 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                   <Link
                     href={`/profile/${imageDetailData?.images?.createdBy?.id}`}
                   >
-                    <p>{imageDetailData?.images?.createdBy?.name}</p>
+                    <p>
+                      {imageDetailData?.images?.createdBy?.name}{" "}
+                      <span className="text-input">
+                        ({imageDetailData?.images?.createdBy?.role})
+                      </span>
+                    </p>
                   </Link>
                   <p className="text-sm text-gray-500">
                     {imageDetailData?.images?.createdBy?.userId}
@@ -169,13 +180,11 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                         </Avatar>
                       </Link>
                       <div className="flex flex-col gap-1">
-                        <Link
-                          href={`/profile/${imageDetailData?.images?.createdBy?.id}`}
-                        >
-                          <p>{imageDetailData?.images?.createdBy?.name}</p>
+                        <Link href={`/profile/${comment.commentedBy?.id}`}>
+                          <p>{comment.commentedBy?.name}</p>
                         </Link>
                         <p className="text-sm text-gray-500">
-                          {imageDetailData?.images?.createdBy?.userId}
+                          {comment?.userId}
                         </p>
                       </div>
                     </div>
@@ -188,7 +197,10 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
           <div>
             <div className="border-b border-b-border py-2 flex items-center justify-between">
               <div className="flex gap-5">
-                <Heart className="cursor-pointer" />
+                <LikeButton
+                  imageId={imageId}
+                  userId={session?.data?.user?.userId}
+                />
                 <button onClick={handleFocusInput}>
                   <MessageCircle className="cursor-pointer" />
                 </button>

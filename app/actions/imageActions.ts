@@ -23,7 +23,7 @@ export async function getAllImageHomeData() {
   const res = await fetch(`${process.env.API_URL}/image`, {
     method: "GET",
     next: {
-      revalidate: 300,
+      revalidate: 10,
     },
   });
   if (!res.ok) {
@@ -118,9 +118,10 @@ export async function createImage(prevState: any, formData: FormData) {
       }),
     });
     const data = await res.json();
+    console.log(data);
     if (data.status === 200) {
       revalidatePath("/");
-      redirect("/")
+      redirect("/");
     } else {
       return { message: "There was an error creating post, please try again" };
     }
@@ -128,17 +129,17 @@ export async function createImage(prevState: any, formData: FormData) {
   // console.log(rawData.images);
 }
 
-export async function getImageDetail(id:string){
-  const parseId = parseInt(id)
-  const res = await fetch(`${process.env.API_URL}/image/${parseId}`,{
-    method:"GET",
-    next:{
-      tags:["image-details"]
-    }
-  })
-  if(!res.ok){
-    throw new Error("Couldn't get image details")
+export async function getImageDetail(id: string) {
+  const parseId = parseInt(id);
+  const res = await fetch(`${process.env.API_URL}/image/${parseId}`, {
+    method: "GET",
+    next: {
+      tags: ["image-details"],
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Couldn't get image details");
   }
-  const data = await res.json()
-  return data
+  const data = await res.json();
+  return data;
 }
