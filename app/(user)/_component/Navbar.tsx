@@ -16,7 +16,7 @@ const Navbar = async () => {
           <Image src={`/logo.png`} alt="logo" width={150} height={150} />
           <NavRoute
             label="Home"
-            route="/"
+            route="/?date=undefined"
             icon={<Home className="size-[30px]" />}
           />
           <NavRoute

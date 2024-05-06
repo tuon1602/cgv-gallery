@@ -32,6 +32,19 @@ export async function getAllImageHomeData() {
   return res.json();
 }
 
+export async function getAllImageByDate(date: string) {
+  const res = await fetch(`${process.env.API_URL}/search?date=${date}`, {
+    method: "GET",
+    next: {
+      revalidate: 10,
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Error fetching image");
+  }
+  return res.json();
+}
+
 //pushing image to Google Drive and get array urls
 async function postFile(postData: any) {
   try {

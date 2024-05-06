@@ -12,10 +12,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useRouter } from "next/navigation";
 
 export function DatePicking() {
+  const router = useRouter();
   const [date, setDate] = React.useState<Date>();
-  console.log(date?.toISOString())
+  React.useEffect(() => {
+    router.push(`/?date=${date?.toISOString()}`);
+  }, [date]);
   return (
     <Popover>
       <PopoverTrigger asChild>

@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search, X } from "lucide-react";
+import { Search, X,User,Image as LucideImage } from "lucide-react";
 import _debounce from "lodash/debounce";
 import axios from "axios";
 import { cn } from "@/lib/utils";
@@ -72,7 +72,7 @@ const UserSearch = () => {
       )}
       <div
         className={cn(
-          "absolute min-h-[500px] max-h-[700px] border border-input bg-background rounded-sm z-[99] w-full top-[100%] border-t-0 rounded-t-none overflow-y-scroll",
+          "absolute min-h-[500px] max-h-[500px] border border-input bg-background rounded-sm z-[99] w-full top-[100%] border-t-0 rounded-t-none overflow-y-scroll",
           isFocused ? "block" : "hidden",
           value.length === 0 && "hidden"
         )}
@@ -94,13 +94,13 @@ const UserSearch = () => {
             searchData?.result?.users.length != 0) && (
             <>
               <div className="p-3 flex flex-col gap-5">
-                <div className="text-center border-b border-b-input w-full pb-3">
-                  Users
+                <div className="text-center border-b border-b-input w-full pb-3 flex justify-center items-center gap-2">
+                  <User width={30} height={30}/><p>Users</p>
                 </div>
                 {searchData?.result?.users.map((user, index) => (
                   <>
                     <div
-                      className="flex items-center gap-5"
+                      className="flex items-center gap-5 cursor-pointer"
                       onClick={() => console.log("WTF")}
                     >
                       <Avatar>
@@ -116,8 +116,8 @@ const UserSearch = () => {
                 ))}
               </div>
               <div className="p-3 flex flex-col gap-5">
-                <div className="text-center border-b border-b-input w-full pb-3">
-                  Images
+                <div className="text-center border-b border-b-input w-full pb-3 flex justify-center items-center gap-2">
+                  <LucideImage width={30} height={30}/><p>Images</p>
                 </div>
                 {searchData?.result?.images.map((image, index) => (
                   <>

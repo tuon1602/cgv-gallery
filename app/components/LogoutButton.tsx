@@ -19,7 +19,7 @@ const LogoutButton = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="bg-red-500 hover:bg-red-500 hover:opacity-80">Logout</Button>
+        <Button variant="outline" className="bg-red-500 hover:bg-red-500 hover:opacity-80 text-white hover:text-white">Logout</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

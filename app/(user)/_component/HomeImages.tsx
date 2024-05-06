@@ -32,8 +32,8 @@ const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
               <Image
                 src={image.imageUrl[0]}
                 alt={image.title}
-                width={400}
-                height={400}
+                width={1000}
+                height={1000}
                 className="aspect-square object-cover"
               />
               {image.imageUrl.length > 1 && (

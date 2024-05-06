@@ -23,6 +23,12 @@ export async function GET(req: NextRequest) {
                 mode: "insensitive",
               },
             },
+            {
+              userId: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
           ],
         },
         select: {
@@ -50,12 +56,20 @@ export async function GET(req: NextRequest) {
                 },
               },
             },
+            {
+              createdBy: {
+                userId: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            },
           ],
         },
         select: {
           id: true,
           userId: true,
-          title:true,
+          title: true,
           createdBy: {
             select: {
               id: true,
@@ -86,8 +100,23 @@ export async function GET(req: NextRequest) {
             lte: endOfDay,
           },
         },
+        include: {
+          createdBy: {
+            select: {
+              id: true,
+              userId: true,
+              avatarUrl: true,
+              role: true,
+            },
+          },
+          comments: true,
+        },
       });
-      return NextResponse.json({ status: 200, message: "Success", result });
+      return NextResponse.json({
+        status: 200,
+        message: "Success",
+        images: result,
+      });
     }
     return NextResponse.json({ status: 400, message: "No result found" });
   } catch (err) {
