@@ -19,12 +19,12 @@ const ImageCarousel: React.FC<IProps> = ({ images }) => {
     <>
       {/* <Carousel className="absolute w-[inherit] top-1/2 left-1/2 transform -translate-y-1/2 right-1/2">
        */}
-      <Carousel className="w-full h-full">
+      <Carousel>
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem className="p-0 m-0" key={index}>
               <Card className="border-0 p-0 m-0">
-                <CardContent className="flex aspect-square items-center justify-center min-h-screen w-full border-0 p-0 m-0">
+                <CardContent className="flex items-center justify-center min-h-screen w-full border-0 p-0 m-0">
                   <Image src={image} alt={`${index}`} width={1000} height={1000} className="object-cover"/>
                 </CardContent>
               </Card>

@@ -5,6 +5,7 @@ import { IGetAllImages } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Images, Heart, MessageSquare } from "lucide-react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
   const [isShown, setIsShown] = useState(false);
@@ -34,8 +35,9 @@ const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
                 alt={image.title}
                 width={1000}
                 height={1000}
-                className="aspect-square object-cover"
+                className="aspect-square object-cover rounded-md"
               />
+
               {image.imageUrl.length > 1 && (
                 <Images className="absolute right-2 top-2 w-5 h-5 shadow-xl drop-shadow-2xl text-blue-500" />
               )}
