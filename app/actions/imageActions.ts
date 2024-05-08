@@ -115,7 +115,6 @@ export async function createImage(prevState: any, formData: FormData) {
     return { message: "Please choose images" };
   }
   await getUrl(rawData.images);
-  console.log(myImages);
   if (myImages.length > 0) {
     const res = await fetch(`${process.env.API_URL}/image`, {
       method: "POST",
@@ -131,9 +130,8 @@ export async function createImage(prevState: any, formData: FormData) {
       }),
     });
     const data = await res.json();
-    console.log(data);
     if (data.status === 200) {
-      revalidatePath("/");
+      revalidatePath("/", "layout");
       redirect("/");
     } else {
       return { message: "There was an error creating post, please try again" };

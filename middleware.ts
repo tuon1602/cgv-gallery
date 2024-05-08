@@ -18,5 +18,6 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico)|/login.*)',
     "/create-image/:path*",
     "/faq/:path*",
+    "/profile/:path*",
   ],
 };

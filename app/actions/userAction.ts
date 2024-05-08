@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bycript from "bcrypt";
@@ -6,12 +6,12 @@ import type { User } from "@prisma/client";
 import { revalidateTag } from "next/cache";
 
 export async function getAllUsers() {
-  const res = await fetch(`${process.env.API_URL}/user`,{
-    method:"GET",
-    next:{
-      tags:["users"]
+  const res = await fetch(`${process.env.API_URL}/user`, {
+    method: "GET",
+    next: {
+      tags: ["users"],
     },
-    cache:"no-store"
+    cache: "no-store",
   });
   if (!res.ok) {
     throw new Error("Cannot get all users");
@@ -58,7 +58,23 @@ export async function getUsers() {
   revalidateTag("users-admin");
   return users;
 }
-
+export async function getUserById(userId: string) {
+  const res = await fetch(`${process.env.API_URL}/user/${userId}`, {
+    method: "GET",
+    next: {
+      tags: ["user_detail"],
+      revalidate: 2
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error("Cannot get all users");
+  }
+  if (data && data.status !== 200) {
+    throw new Error(data.message);
+  }
+  return data.user
+}
 
 // const salt = 10;
 

@@ -24,8 +24,6 @@ export default async function Home({
   const imagesDateFilter = await getAllImageByDate(searchParams.date);
   const images = await getAllImageHomeData();
   const session = await getServerSession(authOptions);
-  console.log(imagesDateFilter);
-  console.log(images);
   return (
     <main className="w-full p-5 flex flex-col items-center m-auto">
       <section className="flex justify-center items-center gap-10 min-w-[800px]">

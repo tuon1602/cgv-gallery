@@ -11,7 +11,7 @@ datasource db {
 model User {
   id          Int           @id @default(autoincrement())
   userId      String        @unique
-  password    String
+  password    String        
   avatarUrl   String        @default("https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg")
   name        String
   role        String
