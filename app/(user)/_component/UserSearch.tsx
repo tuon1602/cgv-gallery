@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search, X,User,Image as LucideImage } from "lucide-react";
+import { Search, X, User, Image as LucideImage } from "lucide-react";
 import _debounce from "lodash/debounce";
 import axios from "axios";
 import { cn } from "@/lib/utils";
@@ -10,8 +10,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ISearchResult } from "@/types";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const UserSearch = () => {
+  const router = useRouter();
   const [value, setValue] = useState<string>("");
   const [searchData, setSearchData] = useState<ISearchResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -76,17 +79,21 @@ const UserSearch = () => {
           isFocused ? "block" : "hidden",
           value.length === 0 && "hidden"
         )}
+        onMouseDown={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
       >
-        <div className="absolute inset-0 flex justify-center items-center">
+        <div className="flex justify-center items-center w-full h-[inherit]">
           {loading &&
             searchData?.status != 200 &&
             searchData?.message != "Success" && (
-              <div className="flex justify-center items-center">loading...</div>
+              <div className="flex justify-center items-center h-full w-full">loading...</div>
             )}
           {loading === false &&
             searchData?.result?.images.length === 0 &&
             searchData?.result?.users.length === 0 && (
-              <div>no result found</div>
+              <div className="flex justify-center items-center h-full w-full">no result found</div>
             )}
         </div>
         {loading === false &&
@@ -95,33 +102,39 @@ const UserSearch = () => {
             <>
               <div className="p-3 flex flex-col gap-5">
                 <div className="text-center border-b border-b-input w-full pb-3 flex justify-center items-center gap-2">
-                  <User width={30} height={30}/><p>Users</p>
+                  <User width={30} height={30} />
+                  <p>Users</p>
                 </div>
                 {searchData?.result?.users.map((user, index) => (
                   <>
-                    <div
+                    <Link
+                      target="_blank"
+                      href={`/profile/${user.userId}`}
                       className="flex items-center gap-5 cursor-pointer"
-                      onClick={() => console.log("WTF")}
                     >
                       <Avatar>
                         <AvatarImage src={user.avatarUrl} alt={user.name} />
                         <AvatarFallback>{user.name}</AvatarFallback>
                       </Avatar>
-                      <div className="text-sm">
+                      <div className="text-sm cursor-pointer">
                         <p>{user.name}</p>
                         <p className="text-gray-500">{user.userId}</p>
                       </div>
-                    </div>
+                    </Link>
                   </>
                 ))}
               </div>
               <div className="p-3 flex flex-col gap-5">
                 <div className="text-center border-b border-b-input w-full pb-3 flex justify-center items-center gap-2">
-                  <LucideImage width={30} height={30}/><p>Images</p>
+                  <LucideImage width={30} height={30} />
+                  <p>Images</p>
                 </div>
                 {searchData?.result?.images.map((image, index) => (
                   <>
-                    <div className="flex items-center gap-2">
+                    <Link
+                      href={`/photo/${image.id}`}
+                      className="flex items-center gap-2"
+                    >
                       <Image
                         src={image.imageUrl[0]}
                         alt={image.title}
@@ -135,7 +148,7 @@ const UserSearch = () => {
                           {image.createdBy.name} ({image.createdBy.userId})
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   </>
                 ))}
               </div>

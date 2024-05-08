@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface IProps {
   userId: string | undefined;
@@ -116,7 +122,17 @@ const LikeButton: React.FC<IProps> = ({ userId, imageId }) => {
       {liked ? (
         <FaHeart className="w-5 h-5 text-red-500" />
       ) : (
-        <FaRegHeart className="w-5 h-5" />
+        <TooltipProvider delayDuration={10}>
+          <Tooltip>
+            <TooltipTrigger>
+              {" "}
+              <FaRegHeart className="w-5 h-5" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Like</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )}
     </button>
   );

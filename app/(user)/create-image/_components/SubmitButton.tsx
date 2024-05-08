@@ -13,7 +13,7 @@ const SubmitButton = () => {
       aria-disabled={pending}
       className="col-span-2"
     >
-      {pending ? "Creating" : "Create"}
+      {pending ? "Creating ..." : "Create"}
     </Button>
   );
 };

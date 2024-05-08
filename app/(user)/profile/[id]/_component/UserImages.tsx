@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Images, Heart, MessageSquare } from "lucide-react";
 
 const HomeImages = ({ imageData }: { imageData: any }) => {
-    console.log(imageData)
   const [isShown, setIsShown] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
   const handleMouseEnter = (index: any) => {

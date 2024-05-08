@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import AuthProviders from "../../../providers/AuthProvider";
+import AuthProviders from "../../providers/AuthProvider";
 import { Session, getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { Toaster } from "@/components/ui/sonner";
-import ExpiredAlert from "../../../components/ExpiredAlert";
-import SideSelect from "../../_component/SideSelect";
+import ExpiredAlert from "../../components/ExpiredAlert";
+import SideSelect from "../_component/SideSelect";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
 

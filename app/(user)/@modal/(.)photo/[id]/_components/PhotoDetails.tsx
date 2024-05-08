@@ -36,6 +36,12 @@ import SubmitButton from "./SubmitButton";
 import { toast } from "sonner";
 import LikeButton from "./LikeButton";
 import ImageCarousel from "./ImageCarousel";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PhotoDetailsProps {
   imageDetailData: IImageDetail;
@@ -81,7 +87,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
       <div className="grid grid-cols-2 w-full h-full items-center text-sm">
         <div className="relative h-full">
           {imageDetailData?.images?.imageUrl.length > 1 ? (
-            <ImageCarousel images={imageDetailData.images.imageUrl}/>
+            <ImageCarousel images={imageDetailData.images.imageUrl} />
           ) : (
             <Image
               alt={imageDetailData?.images?.title}
@@ -97,7 +103,8 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
             <div className="flex justify-between border-b border-b-border pb-2">
               <div className="flex items-center gap-3">
                 <Link
-                  href={`/profile/${imageDetailData?.images?.createdBy?.id}`}
+                  target="_blank"
+                  href={`/profile/${imageDetailData?.images?.createdBy?.userId}`}
                 >
                   <Avatar>
                     <AvatarImage
@@ -111,7 +118,8 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                 </Link>
                 <div className="flex flex-col gap-1">
                   <Link
-                    href={`/profile/${imageDetailData?.images?.createdBy?.id}`}
+                    target="_blank"
+                    href={`/profile/${imageDetailData?.images?.createdBy?.userId}`}
                   >
                     <p>
                       {imageDetailData?.images?.createdBy?.name}{" "}
@@ -136,7 +144,8 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
             <div className="pt-2 overflow-y-scroll max-h-[700px]">
               <div className="flex items-center gap-3">
                 <Link
-                  href={`/profile/${imageDetailData?.images?.createdBy?.id}`}
+                  target="_blank"
+                  href={`/profile/${imageDetailData?.images?.createdBy?.userId}`}
                 >
                   <Avatar>
                     <AvatarImage
@@ -151,7 +160,8 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
 
                 <div className="flex flex-col gap-1">
                   <Link
-                    href={`/profile/${imageDetailData?.images?.createdBy?.id}`}
+                    target="_blank"
+                    href={`/profile/${imageDetailData?.images?.createdBy?.userId}`}
                   >
                     <p>{imageDetailData?.images?.createdBy?.name}</p>
                   </Link>
@@ -164,11 +174,19 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
               <div className="mt-2">
                 <p>{imageDetailData?.images?.title}</p>
               </div>
+              <div className="mt-2">
+                <p className="capitalize">
+                  {imageDetailData?.images?.description}
+                </p>
+              </div>
               <div className="mt-4 flex flex-col gap-5">
                 {comments?.allCommentsByImageId?.map((comment, index) => (
                   <div key={comment.id} className="flex gap-4">
                     <div className="flex items-center gap-3">
-                      <Link href={`/profile/${comment.commentedBy?.id}`}>
+                      <Link
+                        target="_blank"
+                        href={`/profile/${comment.commentedBy?.userId}`}
+                      >
                         <Avatar>
                           <AvatarImage
                             src={comment.commentedBy?.avatarUrl}
@@ -180,7 +198,10 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                         </Avatar>
                       </Link>
                       <div className="flex flex-col gap-1">
-                        <Link href={`/profile/${comment.commentedBy?.id}`}>
+                        <Link
+                          target="_blank"
+                          href={`/profile/${comment.commentedBy?.userId}`}
+                        >
                           <p>{comment.commentedBy?.name}</p>
                         </Link>
                         <p className="text-sm text-gray-500">
@@ -204,13 +225,23 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                 <button onClick={handleFocusInput}>
                   <MessageCircle className="cursor-pointer" />
                 </button>
-                <button
-                  onClick={() =>
-                    navigator.clipboard.writeText(window.location.href)
-                  }
-                >
-                  <Copy className="cursor-pointer" />
-                </button>
+                <TooltipProvider delayDuration={10}>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      {" "}
+                      <button
+                        onClick={() =>
+                          navigator.clipboard.writeText(window.location.href)
+                        }
+                      >
+                        <Copy className="cursor-pointer" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Copy Url</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               <div className="text-md">
                 {imageDetailData?.images?.likes > 0 ? (

@@ -30,6 +30,9 @@ const ProfilePage = async ({ params }: { params: { id: string } }) => {
         {userData?.name}
         <span className="text-gray-500 ml-2">({userData?.userId})</span>
       </h1>
+      <h2 className="text-xl font-bold">
+        Posts: {userData?.images.length}
+      </h2>
       <div className="">
         {userData?.images.length > 0 ? (
           <UserImages imageData={userData?.images}/>
