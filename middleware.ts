@@ -19,5 +19,8 @@ export const config = {
     "/create-image/:path*",
     "/faq/:path*",
     "/profile/:path*",
+    "/photo/:path*",
+    "/admin/:path*",
+    "/saved/:path*",
   ],
 };
