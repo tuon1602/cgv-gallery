@@ -23,6 +23,10 @@ export default async function UserLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions)
+  if(!session){
+    redirect("/login")
+  }
   return (
     <section className="grid grid-cols-12 min-h-screen">
       <nav className="grid col-span-2">
