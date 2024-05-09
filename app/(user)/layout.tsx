@@ -36,6 +36,7 @@ export default async function UserLayout({
         {children}
       </div>
       {modal}
+      <Toaster richColors position="top-center"/>
     </section>
   );
 }

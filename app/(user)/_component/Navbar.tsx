@@ -85,7 +85,7 @@ const Navbar = async () => {
                 <Dialog>
                   <DialogTrigger>Change password</DialogTrigger>
                   <DialogContent>
-                    <ChangePassword />
+                    <ChangePassword userId={session?.user?.userId}/>
                   </DialogContent>
                 </Dialog>
                 <ThemeToggle />
