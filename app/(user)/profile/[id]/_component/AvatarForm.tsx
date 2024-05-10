@@ -41,7 +41,7 @@ const AvatarForm: React.FC<IProps> = ({ currentAvatar, userId }) => {
     }
   };
   useEffect(() => {
-    if (state?.status === 200) {
+    if (state && state?.status === 200) {
       toast.success(state?.message);
       setAvatar(undefined);
     } else {
