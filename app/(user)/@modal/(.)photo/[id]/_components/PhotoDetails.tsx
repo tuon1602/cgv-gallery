@@ -85,7 +85,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
   return (
     <>
       <div className="grid grid-cols-2 w-full h-full items-center text-sm">
-        <div className="relative h-full">
+        <div className="h-full w-full col-span-1">
           {imageDetailData?.images?.imageUrl.length > 1 ? (
             <ImageCarousel images={imageDetailData.images.imageUrl} />
           ) : (
@@ -98,7 +98,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
           )}
         </div>
 
-        <div className="bg-background w-full h-full px-8 pb-5 pt-5 flex justify-between flex-col">
+        <div className="bg-background w-full h-full px-8 pb-[1.5rem] pt-5 flex justify-between flex-col">
           <div className="w-full">
             <div className="flex justify-between border-b border-b-border pb-2">
               <div className="flex items-center gap-3">

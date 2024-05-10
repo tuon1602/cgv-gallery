@@ -30,9 +30,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ChangePassword from "./ChangePassword";
+import { getUserAvatar } from "@/app/actions/userAction";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
+  const userAvatar = await getUserAvatar(session?.user?.userId as string)
   return (
     <div className="border-r border-r-secondary min-h-screen">
       <div className="sticky top-0 left-0 p-5 space-y-4 flex flex-col justify-between items-start min-h-[100dvh] w-full">
@@ -64,7 +66,7 @@ const Navbar = async () => {
             <NavRoute
               label="Profile"
               route={`/profile/${session?.user?.userId}`}
-              avatar={session?.user?.avatarUrl}
+              avatar={userAvatar?.avatarUrl}
             />
           )}
           <NavRoute

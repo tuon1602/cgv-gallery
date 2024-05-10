@@ -48,13 +48,10 @@ export async function getAllImageByDate(date: string) {
 //pushing image to Google Drive and get array urls
 async function postFile(postData: any) {
   try {
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbzQvQOAAm77MqEkW_2fBmFxBELEIx3hyLZYieL-TABqleJZ7br4O0rIDOF8NzxN1QA0/exec",
-      {
-        method: "POST",
-        body: JSON.stringify(postData),
-      }
-    );
+    const response = await fetch(`${process.env.API_GOOGLEDRIVE_DB}`, {
+      method: "POST",
+      body: JSON.stringify(postData),
+    });
     const data: IDataItems[] = await response.json();
     const linksArray: string[] = data.map((item: IDataItems) => item.link);
     myImages = [...linksArray];

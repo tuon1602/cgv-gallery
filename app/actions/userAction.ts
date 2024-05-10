@@ -3,7 +3,8 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import type { User } from "@prisma/client";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidate } from "../(user)/profile/[id]/page";
 
 export async function getAllUsers() {
   const res = await fetch(`${process.env.API_URL}/user`, {
@@ -108,6 +109,23 @@ export async function getUserById(userId: string) {
 //   }
 // }
 
+export async function getUserAvatar(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      userId: userId,
+    },
+    select: {
+      avatarUrl: true,
+    },
+  });
+  if (user) {
+    return user;
+  }
+  else{
+    throw new Error("There is no user")
+  }
+}
+
 export async function changePassword(prevState: any, formData: FormData) {
   const salt = 10;
   const rawData = {
@@ -155,4 +173,55 @@ export async function changePassword(prevState: any, formData: FormData) {
     return { status: 400, message: "Password does not match" };
   }
   return { status: 404, message: "There has problem updating your password" };
+}
+
+let dataImage: string;
+
+async function postFile(postData: any) {
+  try {
+    const response = await fetch(`${process.env.API_GOOGLEDRIVE_AVATAR}`, {
+      method: "POST",
+      body: JSON.stringify(postData),
+    });
+    const data: any = await response.json();
+    dataImage = data.link;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getUrl(image: File) {
+  const buffer = await image.arrayBuffer();
+  const base64Image = Buffer.from(buffer).toString("base64");
+  const postData = {
+    name: image.name,
+    type: image.type,
+    data: base64Image,
+  };
+  await postFile(postData);
+}
+
+export async function changeAvatar(prevState: any, formData: FormData) {
+  const rawData = {
+    avatar: formData.get("avatarImage") as File,
+    userId: formData.get("userId") as string,
+  };
+  if (!rawData.avatar) {
+    return { status: 404, message: "Missing params" };
+  }
+  await getUrl(rawData.avatar);
+  const updateAvatarUser = await prisma.user.update({
+    where: {
+      userId: rawData.userId,
+    },
+    data: {
+      avatarUrl: dataImage,
+    },
+  });
+  if (updateAvatarUser) {
+    revalidatePath("/", "layout");
+    return { status: 200, message: "Updated avatar" };
+  } else {
+    return { status: 404, message: "Something went wrong" };
+  }
 }

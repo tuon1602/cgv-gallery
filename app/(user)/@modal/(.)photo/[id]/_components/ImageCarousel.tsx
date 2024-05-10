@@ -14,7 +14,6 @@ interface IProps {
 }
 
 const ImageCarousel: React.FC<IProps> = ({ images }) => {
-  console.log(images);
   return (
     <>
       {/* <Carousel className="absolute w-[inherit] top-1/2 left-1/2 transform -translate-y-1/2 right-1/2">

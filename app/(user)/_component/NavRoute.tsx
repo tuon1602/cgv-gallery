@@ -22,7 +22,7 @@ const NavRoute = ({ route, label, icon, avatar }: IProps) => {
             alt="Avatar"
             width={30}
             height={30}
-            className="mr-4 rounded-full"
+            className="aspect-square mr-4 rounded-full"
           />
         )}
         <div className="flex gap-4 text-lg">
