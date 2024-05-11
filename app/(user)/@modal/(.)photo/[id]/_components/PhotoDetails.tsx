@@ -28,7 +28,7 @@ import {
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { previousDay } from "date-fns";
-import { createComment } from "@/app/actions/commentActions";
+import { createComment } from "@/actions/commentActions";
 import { usePathname } from "next/navigation";
 import { IImageComment } from "@/types";
 import { useFormState } from "react-dom";
@@ -42,6 +42,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface PhotoDetailsProps {
   imageDetailData: IImageDetail;
@@ -84,17 +85,22 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
   }, [state]);
   return (
     <>
-      <div className="grid grid-cols-2 w-full h-full items-center text-sm">
+      <div className="grid grid-cols-2 justify-center items-center text-sm h-[inherit] w-full">
         <div className="h-full w-full col-span-1">
           {imageDetailData?.images?.imageUrl.length > 1 ? (
             <ImageCarousel images={imageDetailData.images.imageUrl} />
           ) : (
-            <Image
-              alt={imageDetailData?.images?.title}
-              src={imageDetailData?.images?.imageUrl[0]}
-              fill
-              className="object-contain"
-            />
+            <Card className="border-0 p-0 m-0">
+              <CardContent className="relative border-0 p-0 m-0 min-h-screen">
+                <Image
+                  alt={imageDetailData?.images?.title}
+                  src={imageDetailData?.images?.imageUrl[0]}
+                  fill
+                  loading="lazy"
+                  className="object-contain"
+                />
+              </CardContent>
+            </Card>
           )}
         </div>
 

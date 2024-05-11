@@ -1,8 +1,17 @@
-import { getImageDetail } from "@/app/actions/imageActions";
+import { getAllImageDirectFormDB, getImageDetail } from "@/actions/imageActions";
 import Modal from "./_components/Modal";
 import PhotoDetails from "./_components/PhotoDetails";
-import { getCommentByImageId } from "@/app/actions/commentActions";
+import { getCommentByImageId } from "@/actions/commentActions";
 import { Toaster } from "sonner";
+import { IGetAllImages } from "@/types";
+
+export async function generateStaticParams() {
+  const data:any = await getAllImageDirectFormDB()
+ 
+  return data.map((image:any) => ({
+    id: image.id.toString(),
+  }))
+}
 
 
 export default async function PhotoModal({

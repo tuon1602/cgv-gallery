@@ -30,7 +30,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ChangePassword from "./ChangePassword";
-import { getUserAvatar } from "@/app/actions/userAction";
+import { getUserAvatar } from "@/actions/userAction";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import type { User } from "@prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { revalidate } from "../(user)/profile/[id]/page";
+// import { revalidate } from "../app/(user)/profile/[id]/page";
 
 export async function getAllUsers() {
   const res = await fetch(`${process.env.API_URL}/user`, {
@@ -42,9 +42,6 @@ export async function getAdmins() {
 
 export async function getUsers() {
   const users = await prisma.user.findMany({
-    where: {
-      role: "user",
-    },
     select: {
       id: true,
       userId: true,
@@ -120,9 +117,8 @@ export async function getUserAvatar(userId: string) {
   });
   if (user) {
     return user;
-  }
-  else{
-    throw new Error("There is no user")
+  } else {
+    throw new Error("There is no user");
   }
 }
 

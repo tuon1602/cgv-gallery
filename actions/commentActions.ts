@@ -31,10 +31,10 @@ export async function createComment(prevState: any, formData: FormData) {
   let imageId: number | null = null;
 
   if (typeof rawData.userCommentId === "string") {
-    userCommentId = parseInt(rawData.userCommentId, 10);
+    userCommentId = parseInt(rawData.userCommentId);
   }
   if (typeof rawData.imageId === "string") {
-    imageId = parseInt(rawData.imageId, 10);
+    imageId = parseInt(rawData.imageId);
   }
   if (
     !rawData.content ||
@@ -59,7 +59,7 @@ export async function createComment(prevState: any, formData: FormData) {
     if (data.status === 200) {
       revalidateTag("allComments");
       revalidatePath("/")
-      return {resetKey:Date.now().toString(),message:"Created"}
+      return {message:"Created"}
     } else {
       return {message: "Error creating comment" };
     }

@@ -7,6 +7,7 @@ import { join } from "path";
 import { getURL } from "next/dist/shared/lib/utils";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
 interface IDataItems {
   status: string;
@@ -18,6 +19,11 @@ interface IDataItems {
 
 let postData: any = [];
 let myImages: string[] = [];
+
+export async function getAllImageDirectFormDB() {
+  const images = await prisma.image.findMany({});
+  return images;
+}
 
 export async function getAllImageHomeData() {
   const res = await fetch(`${process.env.API_URL}/image`, {
@@ -143,6 +149,7 @@ export async function getImageDetail(id: string) {
     method: "GET",
     next: {
       tags: ["image-details"],
+      revalidate: 5,
     },
   });
   if (!res.ok) {

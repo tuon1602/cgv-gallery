@@ -27,7 +27,7 @@ const LogoutButton = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={()=>signOut()}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={()=>signOut({callbackUrl:"/login",redirect:true})}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

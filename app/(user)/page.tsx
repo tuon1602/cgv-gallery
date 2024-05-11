@@ -11,7 +11,7 @@ import UserFindTags from "./_component/UserFindTags";
 import {
   getAllImageByDate,
   getAllImageHomeData,
-} from "../actions/imageActions";
+} from "../../actions/imageActions";
 import { notFound } from "next/navigation";
 import HomeImages from "./_component/HomeImages";
 import moment from "moment";

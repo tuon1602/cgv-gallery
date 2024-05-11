@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { createImage } from "@/app/actions/imageActions";
+import { createImage } from "@/actions/imageActions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useFormState, useFormStatus } from "react-dom";

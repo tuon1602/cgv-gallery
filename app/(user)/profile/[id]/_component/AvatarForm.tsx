@@ -19,7 +19,7 @@ interface IProps {
   userId: string;
 }
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { changeAvatar } from "@/app/actions/userAction";
+import { changeAvatar } from "@/actions/userAction";
 import { Button } from "@/components/ui/button";
 import { useFormState, useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
@@ -44,9 +44,9 @@ const AvatarForm: React.FC<IProps> = ({ currentAvatar, userId }) => {
     if (state && state?.status === 200) {
       toast.success(state?.message);
       setAvatar(undefined);
-    } else {
+    } else if (state && state?.status === 404) {
       toast.error(state?.message);
-      setAvatar(undefined)
+      setAvatar(undefined);
     }
   }, [state]);
   return (
@@ -105,7 +105,7 @@ const AvatarForm: React.FC<IProps> = ({ currentAvatar, userId }) => {
               </div>
             </section>
             <DialogFooter className="flex flex-col items-center sm:flex-row sm:justify-center sm:space-x-2">
-              <ChangeAvatarSubmitButton avatar={avatar}/>
+              <ChangeAvatarSubmitButton avatar={avatar} />
             </DialogFooter>
           </form>
         </DialogContent>

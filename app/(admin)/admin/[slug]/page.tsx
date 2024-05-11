@@ -2,7 +2,7 @@
 import React from "react";
 import DashboardContent from "../../_component/dashboard/DashboardContent";
 import UserContent from "../../_component/users/UserContent";
-import { getAllUsers, getAdmins, getUsers } from "@/app/actions/userAction";
+import { getAllUsers, getAdmins, getUsers } from "@/actions/userAction";
 import { Session, getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
