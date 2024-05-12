@@ -8,12 +8,12 @@ import UserImages from "./_component/UserImages";
 import { Toaster } from "@/components/ui/sonner";
 import { IUsers } from "@/types";
 
-// export async function generateStaticParams() {
-//   const users: any = await getUsers();
-//   return users.map((user: any) => ({
-//     id: user.userId,
-//   }));
-// }
+export async function generateStaticParams() {
+  const users: any = await getUsers();
+  return users.map((user: any) => ({
+    id: user.userId,
+  }));
+}
 
 const ProfilePage = async ({ params }: { params: { id: string } }) => {
   const userData = await getUserById(params.id);

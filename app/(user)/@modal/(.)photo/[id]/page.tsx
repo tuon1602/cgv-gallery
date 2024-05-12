@@ -5,13 +5,13 @@ import { getCommentByImageId } from "@/actions/commentActions";
 import { Toaster } from "sonner";
 import { IGetAllImages } from "@/types";
 
-// export async function generateStaticParams() {
-//   const data:any = await getAllImageDirectFormDB()
+export async function generateStaticParams() {
+  const data:any = await getAllImageDirectFormDB()
  
-//   return data.map((image:any) => ({
-//     id: image.id.toString(),
-//   }))
-// }
+  return data.map((image:any) => ({
+    id: image.id.toString(),
+  }))
+}
 
 
 export default async function PhotoModal({
