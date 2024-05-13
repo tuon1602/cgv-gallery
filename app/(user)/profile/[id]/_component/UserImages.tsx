@@ -20,7 +20,7 @@ const HomeImages = ({ imageData }: { imageData: any }) => {
 
   return (
     <>
-      <section className="grid grid-cols-3 gap-2">
+      <section className="grid grid-cols-3 gap-2 max-sm:gap-1 ">
         {imageData?.map((image:any, index:any) => (
           <div key={image.id}>
             <Link

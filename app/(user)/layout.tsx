@@ -28,11 +28,11 @@ export default async function UserLayout({
     redirect("/login")
   }
   return (
-    <section className="grid grid-cols-12 min-h-screen">
-      <nav className="grid col-span-2">
+    <section className="lg:grid lg:grid-cols-12 min-h-screen">
+      <nav className="grid col-span-1 xl:col-span-2">
         <Navbar />
       </nav>
-      <div className="col-span-10">
+      <div className="col-span-11 xl:col-span-10">
         {children}
       </div>
       {modal}

@@ -15,7 +15,7 @@ import Link from "next/link";
 
 export default function FaqPage() {
   return (
-    <main className="flex justify-center items-center mt-5 max-w-[1000px] m-auto">
+    <main className="flex justify-center items-center mt-5 max-w-[1000px] m-auto lg:px-5">
       <Tabs defaultValue="info" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="info">Info</TabsTrigger>

@@ -21,7 +21,7 @@ const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
 
   return (
     <>
-      <section className="grid grid-cols-3 gap-2">
+      <section className="grid grid-cols-3 gap-2 max-sm:gap-1">
         {imageData?.images?.map((image, index) => (
           <div key={image.id}>
             <Link
@@ -39,7 +39,7 @@ const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
               />
 
               {image.imageUrl.length > 1 && (
-                <Images className="absolute right-2 top-2 w-5 h-5 shadow-xl drop-shadow-2xl text-blue-500" />
+                <Images className="absolute right-2 top-2 w-5 h-5 max-md:w-4 max-md:h-4 shadow-xl drop-shadow-2xl text-blue-500" />
               )}
               {isShown && currentImage === index && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">

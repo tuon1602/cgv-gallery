@@ -26,15 +26,18 @@ export default async function Home({
   const session = await getServerSession(authOptions);
   return (
     <main className="w-full p-5 flex flex-col items-center m-auto">
-      <section className="flex justify-center items-center gap-10 min-w-[800px]">
+      <section className="flex flex-col lg:flex-row lg:justify-center lg:items-center gap-4 lg:gap-10 md:max-w-[500px] lg:max-w-[800px] w-full">
         <UserSearch />
         <DatePicking />
       </section>
       {/* <section className="mt-10">
         <UserFindTags />
       </section> */}
-      <section className="mt-10 max-w-[1000px]">
-        {!searchParams || searchParams.date==="undefined" && <HomeImages imageData={images} />}
+      <section className="mt-10 xl:max-w-[1000px] w-full">
+        {!searchParams ||
+          (searchParams.date === "undefined" && (
+            <HomeImages imageData={images} />
+          ))}
         {searchParams.date && searchParams.date != "undefined" && (
           <div>
             {imagesDateFilter?.images?.length === 0 ? (
