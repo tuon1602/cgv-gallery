@@ -85,13 +85,13 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
   }, [state]);
   return (
     <>
-      <div className="grid grid-cols-2 justify-center items-center text-sm h-[inherit] w-full">
+      <div className="flex flex-wrap flex-col xl:grid xl:grid-cols-2 xl:justify-center xl:items-center text-sm h-[inherit] w-full">
         <div className="h-full w-full col-span-1">
           {imageDetailData?.images?.imageUrl.length > 1 ? (
             <ImageCarousel images={imageDetailData.images.imageUrl} />
           ) : (
             <Card className="border-0 p-0 m-0">
-              <CardContent className="relative border-0 p-0 m-0 min-h-screen">
+              <CardContent className="relative border-0 p-0 m-0 min-h-screen max-md:h-[500px]">
                 <Image
                   alt={imageDetailData?.images?.title}
                   src={imageDetailData?.images?.imageUrl[0]}
