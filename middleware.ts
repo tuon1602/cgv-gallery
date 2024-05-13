@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const sessionToken = req.cookies.get("next-auth.session-token");
-  const productSessionToken = req.cookies.get("__Secure-next-auth.session-token")
-  if (!productSessionToken) {
+  const sessionToken = req.cookies.get("next-auth.session-token"); //development session token
+  const productSessionToken = req.cookies.get("__Secure-next-auth.session-token") // product session token
+  if (process.env.NODE_ENV === "development" && !sessionToken) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+  if (process.env.NODE_ENV === "production" && !productSessionToken) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 }

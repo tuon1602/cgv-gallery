@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Login ",
+  title: "CGV-Gallery Login",
   description: "Trang đăng nhập của CGV-Gallery",
 };
 

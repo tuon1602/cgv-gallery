@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 import {
@@ -24,9 +24,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { userLoginSchema } from "@/constants/schema";
+import { useState } from "react";
+import LoginImage from "@/public/Login.jpg"
 
 export function LoginForm() {
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof userLoginSchema>>({
     resolver: zodResolver(userLoginSchema),
     defaultValues: {
@@ -35,6 +38,7 @@ export function LoginForm() {
     },
   });
   function onSubmit(values: z.infer<typeof userLoginSchema>) {
+    setLoading(true);
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     const { userId, password } = values;
@@ -47,18 +51,21 @@ export function LoginForm() {
         toast.error("Id or password is incorrect", {
           duration: 800,
         });
-        return null;
+        setLoading(false);
+        return 0;
       }
       if (res?.ok && res?.status === 200) {
         toast.success("Login sucessful, going to homepage", {
           duration: 800,
         });
+        setLoading(false);
         router.push("/");
       } else {
         toast.error("Id or password is incorrect", {
           duration: 800,
         });
-        return null;
+        setLoading(false);
+        return 0;
       }
     });
   }
@@ -68,10 +75,10 @@ export function LoginForm() {
       <div className="w-full lg:grid lg:min-h-[100vh] lg:grid-cols-2 ">
         <div className="hidden bg-muted lg:block">
           <Image
-            src="/login.jpg"
-            alt="Image"
-            width="1920"
-            height="1080"
+            src={LoginImage}
+            alt="Login-bg"
+            width={1920}
+            height={1080}
             className="h-full w-full object-contain"
           />
         </div>
@@ -114,7 +121,9 @@ export function LoginForm() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Login ..." : "Login"}
+                </Button>
               </form>
             </Form>
           </div>
