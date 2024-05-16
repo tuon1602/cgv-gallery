@@ -18,14 +18,14 @@ const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
   const handleMouseLeave = () => {
     setIsShown(false);
   };
-
   return (
     <>
       <section className="grid grid-cols-3 gap-2 max-sm:gap-1">
         {imageData?.images?.map((image, index) => (
           <div key={image.id}>
             <Link
-              href={`/photo/${image.id}`}
+              href={`/photo/${image.id}`} 
+              scroll={true}
               className="relative cursor-pointer hover:bg-muted-background hover:opacity-60"
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
@@ -42,7 +42,7 @@ const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
                 <Images className="absolute right-2 top-2 w-5 h-5 max-md:w-4 max-md:h-4 shadow-xl drop-shadow-2xl text-blue-500" />
               )}
               {isShown && currentImage === index && (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-md:hidden">
                   <div className="flex text-primary font-bold items-center gap-5">
                     <div className="flex gap-2">
                       <Heart /> <p>{image.likes}</p>

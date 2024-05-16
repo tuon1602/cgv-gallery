@@ -15,6 +15,7 @@ import {
 import { notFound } from "next/navigation";
 import HomeImages from "./_component/HomeImages";
 import moment from "moment";
+import { Suspense } from "react";
 
 export default async function Home({
   searchParams,
@@ -33,21 +34,26 @@ export default async function Home({
       {/* <section className="mt-10">
         <UserFindTags />
       </section> */}
-      <section className="mt-10 xl:max-w-[1000px] w-full">
+      <section className="mt-10 max-w-[800px] 2xl:max-w-[1000px] w-full">
         {!searchParams ||
           (searchParams.date === "undefined" && (
-            <HomeImages imageData={images} />
+            <Suspense fallback={<p>loading....</p>}>
+                <HomeImages imageData={images} />
+            </Suspense>
+          
           ))}
         {searchParams.date && searchParams.date != "undefined" && (
           <div>
             {imagesDateFilter?.images?.length === 0 ? (
-              <div className="mt-10">No result found</div>
+              <div className="mt-10 text-center text-2xl">No result found</div>
             ) : (
               <div className="flex flex-col gap-10">
                 <p className="text-center font-bold text-2xl">
                   {moment(searchParams.date).format("DD/MM/YYYY")}
                 </p>
-                <HomeImages imageData={imagesDateFilter} />
+                <Suspense fallback={<p>loading....</p>}>
+                   <HomeImages imageData={imagesDateFilter} />
+                </Suspense>
               </div>
             )}
           </div>

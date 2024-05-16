@@ -86,8 +86,8 @@ const Navbar = async () => {
           </div>
           <div>
             <DropdownMenu>
-              <DropdownMenuTrigger className="pl-3.5">
-                <Settings />
+              <DropdownMenuTrigger className="pl-3.5 ">
+                <Settings/>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[10rem]">
                 <DropdownMenuLabel>Settings</DropdownMenuLabel>
@@ -108,7 +108,7 @@ const Navbar = async () => {
         </div>
       </div>
       <div className="block lg:hidden">
-        <div className="fixed bottom-0 left-0 right-0 z-50 flex h-16 w-full items-center bg-background">
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex  h-16 md:h-24 w-full items-center bg-background">
           <NavRoute
             label="Home"
             route="/?date=undefined"
@@ -134,7 +134,9 @@ const Navbar = async () => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Settings className="size-[25px]" />
+                <Button variant="outline" className="border-0">
+                  <Settings className="size-[25px]" />
+                </Button> 
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[10rem]">
                 <DropdownMenuLabel>Settings</DropdownMenuLabel>

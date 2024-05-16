@@ -147,7 +147,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                 </p>
               </div>
             </div>
-            <div className="pt-2 overflow-y-scroll max-h-[700px]">
+            <div className="pt-2">
               <div className="flex items-center gap-3">
                 <Link
                   target="_blank"
@@ -185,7 +185,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                   {imageDetailData?.images?.description}
                 </p>
               </div>
-              <div className="mt-4 flex flex-col gap-5">
+              <div className="mt-4 flex flex-col gap-5 overflow-y-scroll overflow-x-hidden h-[400px]">
                 {comments?.allCommentsByImageId?.map((comment, index) => (
                   <div key={comment.id} className="flex gap-4">
                     <div className="flex items-center gap-3">
@@ -215,7 +215,9 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                         </p>
                       </div>
                     </div>
-                    <div>{comment.content}</div>
+                    <div>
+                      <p className="w-[140px] text-pertty break-words">{comment.content}</p>
+                    </div>
                   </div>
                 ))}
               </div>
