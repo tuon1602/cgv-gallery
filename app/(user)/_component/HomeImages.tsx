@@ -25,7 +25,6 @@ const HomeImages = ({ imageData }: { imageData: IGetAllImages }) => {
           <div key={image.id}>
             <Link
               href={`/photo/${image.id}`} 
-              scroll={true}
               className="relative cursor-pointer hover:bg-muted-background hover:opacity-60"
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
