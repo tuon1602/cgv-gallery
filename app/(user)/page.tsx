@@ -34,7 +34,7 @@ export default async function Home({
       {/* <section className="mt-10">
         <UserFindTags />
       </section> */}
-      <section className="mt-10 max-w-[800px] 2xl:max-w-[1000px] w-full">
+      <section className="mt-10 max-w-[800px] 2xl:max-w-[1000px] w-full ">
         {!searchParams ||
           (searchParams.date === "undefined" && (
             <Suspense fallback={<p>loading....</p>}>

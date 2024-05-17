@@ -6,7 +6,7 @@ import { IImageDetail } from "@/types";
 import moment from "moment";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { Copy, Heart, MessageCircle, SmilePlus } from "lucide-react";
+import { Copy, Heart, MessageCircle, SmilePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import {
@@ -29,7 +29,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { previousDay } from "date-fns";
 import { createComment } from "@/actions/commentActions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { IImageComment } from "@/types";
 import { useFormState } from "react-dom";
 import SubmitButton from "./SubmitButton";
@@ -42,7 +42,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
 interface PhotoDetailsProps {
   imageDetailData: IImageDetail;
@@ -55,6 +55,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
   imageId,
   comments,
 }) => {
+  const router = useRouter();
   const session = useSession();
   const pathname = usePathname();
   const [commentValue, setCommentValue] = useState<string>("");
@@ -85,7 +86,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
   }, [state]);
   return (
     <>
-      <div className="flex flex-wrap flex-col xl:grid xl:grid-cols-2 xl:justify-center xl:items-center text-sm h-[inherit] w-full">
+      <section className="hidden lg:flex lg:flex-col lg:flex-wrap xl:grid xl:grid-cols-2 xl:justify-center xl:items-center text-sm h-[inherit] w-full">
         <div className="h-full w-full col-span-1">
           {imageDetailData?.images?.imageUrl.length > 1 ? (
             <ImageCarousel images={imageDetailData.images.imageUrl} />
@@ -216,7 +217,9 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                       </div>
                     </div>
                     <div>
-                      <p className="w-[140px] text-pertty break-words">{comment.content}</p>
+                      <p className="w-[140px] text-pertty break-words">
+                        {comment.content}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -306,7 +309,134 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
             </div>
           </div>
         </div>
-      </div>
+      </section>
+      <section className="lg:hidden p-5 relative h-full w-full">
+        <X
+          className="w-10 h-10 rounded-full absolute top-0 right-0 text-gray-500"
+          onClick={() => router.back()}
+        />
+        <div className="flex flex-col gap-5">
+          <div className="flex gap-4 items-center">
+            <Link
+              target="_blank"
+              href={`/profile/${imageDetailData?.images?.createdBy?.userId}`}
+            >
+              <Avatar>
+                <AvatarImage
+                  src={imageDetailData?.images?.createdBy?.avatarUrl}
+                  alt={imageDetailData?.images?.createdBy?.name}
+                />
+                <AvatarFallback>
+                  {imageDetailData?.images?.createdBy?.name}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+            <Link
+              target="_blank"
+              href={`/profile/${imageDetailData?.images?.createdBy?.userId}`}
+            >
+              <p>
+                {imageDetailData?.images?.createdBy?.name}{" "}
+                <span className="text-input">
+                  ({imageDetailData?.images?.createdBy?.role})
+                </span>
+              </p>
+            </Link>
+          </div>
+          <div className="">
+            {imageDetailData?.images?.imageUrl.length > 1 ? (
+              <ImageCarousel images={imageDetailData.images.imageUrl} />
+            ) : (
+              <Card className="border-0 p-0 m-0">
+                <CardDescription>
+                  <p>Click or Press the image to see full detail</p>
+                </CardDescription>
+                <CardContent
+                  className="aspect-[5/4] relative border-0 p-0 mt-2 w-full flex justify-center items-center"
+                  onClick={() => router.replace(pathname)}
+                >
+                  <Image
+                    alt={imageDetailData?.images?.title}
+                    src={imageDetailData?.images?.imageUrl[0]}
+                    fill
+                    loading="lazy"
+                    className="object-cover"
+                    onClick={() => window.location.reload()}
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </div>
+          <div className="flex gap-5">
+            <LikeButton
+              imageId={imageId}
+              userId={session?.data?.user?.userId}
+            />
+            <button onClick={handleFocusInput}>
+              <MessageCircle className="cursor-pointer" />
+            </button>
+            <TooltipProvider delayDuration={10}>
+              <Tooltip>
+                <TooltipTrigger>
+                  {" "}
+                  <Copy
+                    className="cursor-pointer "
+                    onClick={() =>
+                      navigator.clipboard.writeText(window.location.href)
+                    }
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Copy Url</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <form
+            ref={formRef}
+            className="flex justify-between items-center"
+            action={action}
+          >
+            {/* <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <SmilePlus />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <Picker data={data} onEmojiSelect={console.log} />
+                  </DropdownMenuContent>
+                </DropdownMenu> */}
+            <Dialog>
+              <DialogTrigger>
+                <SmilePlus />
+              </DialogTrigger>
+              <DialogContent className="w-fit">
+                <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+              </DialogContent>
+            </Dialog>
+            <Input
+              onChange={handleSetCommentValue}
+              value={commentValue}
+              ref={inputRef}
+              type="text"
+              placeholder="Add a comment ..."
+              className="ring-offset-0 border-0 focus-visible:ring-0 focus-visible:ring-ring-0 focus-visible:ring-offset-0"
+              name="content"
+            />
+            <Input
+              type="hidden"
+              name="userId"
+              value={session?.data?.user?.userId}
+            />
+            <Input type="hidden" name="imageId" value={parseInt(imageId)} />
+            <Input
+              type="hidden"
+              name="userCommentId"
+              value={parseInt(session?.data?.user?.id as any)}
+            />
+            <SubmitButton />
+          </form>
+        </div>
+      </section>
     </>
   );
 };

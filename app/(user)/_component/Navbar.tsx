@@ -108,7 +108,7 @@ const Navbar = async () => {
         </div>
       </div>
       <div className="block lg:hidden">
-        <div className="fixed bottom-0 left-0 right-0 z-50 flex  h-16 md:h-24 w-full items-center bg-background">
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex h-16 md:h-24 w-full items-center bg-background">
           <NavRoute
             label="Home"
             route="/?date=undefined"
@@ -134,7 +134,7 @@ const Navbar = async () => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Settings className="size-[25px] mr-2 mt-2" />
+                <Settings className="size-[25px] mr-2 mt-[0.35rem]" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[10rem]">
                 <DropdownMenuLabel>Settings</DropdownMenuLabel>
