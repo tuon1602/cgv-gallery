@@ -87,7 +87,7 @@ const Navbar = async () => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger className="pl-3.5 ">
-                <Settings/>
+                <Settings />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[10rem]">
                 <DropdownMenuLabel>Settings</DropdownMenuLabel>
@@ -134,9 +134,7 @@ const Navbar = async () => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button variant="outline" className="border-0">
-                  <Settings className="size-[25px]" />
-                </Button> 
+                <Settings className="size-[25px] mr-2 mt-2" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[10rem]">
                 <DropdownMenuLabel>Settings</DropdownMenuLabel>
