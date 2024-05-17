@@ -32,7 +32,6 @@ export default async function PhotoModal({
           imageId={params.id}
           comments={comments}
         />
-        <Toaster richColors position="top-center" />
       </Modal>
     </>
   );
