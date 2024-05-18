@@ -337,10 +337,11 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
             >
               <p>
                 {imageDetailData?.images?.createdBy?.name}{" "}
-                <span className="text-input">
+                <span className="text-gray-500 text-sm">
                   ({imageDetailData?.images?.createdBy?.role})
                 </span>
               </p>
+              <p className="text-sm text-gray-500">{imageDetailData?.images?.userId}</p>
             </Link>
           </div>
           <div className="">

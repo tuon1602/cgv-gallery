@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
@@ -15,6 +15,7 @@
     "@emoji-mart/react": "^1.1.1",
     "@headlessui/react": "^1.7.19",
     "@hookform/resolvers": "^3.3.4",
+    "@next/bundle-analyzer": "^14.2.3",
     "@prisma/client": "^5.12.1",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
