@@ -34,7 +34,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='transform overflow-hidden rounded-2xl bg-background text-left shadow-xl transition-all w-2/3 lg:max-h-screen max-lg:w-full max-md:max-h-[500px] md:max-h-[600px]'>
+              <Dialog.Panel className='transform overflow-hidden rounded-2xl bg-background text-left shadow-xl transition-all w-2/3 max-lg:max-w-[500px] lg:max-h-screen max-lg:w-full max-md:max-h-[600px] md:max-h-[600px]'>
                 {children}
               </Dialog.Panel>
             </Transition.Child>

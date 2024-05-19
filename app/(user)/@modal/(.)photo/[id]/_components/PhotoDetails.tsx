@@ -239,14 +239,12 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                 <TooltipProvider delayDuration={10}>
                   <Tooltip>
                     <TooltipTrigger>
-                      {" "}
-                      <button
+                      <Copy
+                        className="cursor-pointer"
                         onClick={() =>
                           navigator.clipboard.writeText(window.location.href)
                         }
-                      >
-                        <Copy className="cursor-pointer" />
-                      </button>
+                      />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Copy Url</p>
@@ -268,14 +266,6 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                 className="flex justify-between items-center"
                 action={action}
               >
-                {/* <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <SmilePlus />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <Picker data={data} onEmojiSelect={console.log} />
-                  </DropdownMenuContent>
-                </DropdownMenu> */}
                 <Dialog>
                   <DialogTrigger>
                     <SmilePlus />
@@ -341,7 +331,9 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                   ({imageDetailData?.images?.createdBy?.role})
                 </span>
               </p>
-              <p className="text-sm text-gray-500">{imageDetailData?.images?.userId}</p>
+              <p className="text-sm text-gray-500">
+                {imageDetailData?.images?.userId}
+              </p>
             </Link>
           </div>
           <div className="">

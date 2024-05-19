@@ -134,7 +134,7 @@ const Comments: React.FC<IProps> = ({
       <section>
         <Dialog>
           <DialogTrigger>
-            <p>View all {allComments.length} comments</p>
+            <p className="text-gray-500 underline">View all {allComments.length} comments</p>
           </DialogTrigger>
           <DialogContent className="min-w-[400px] max-h-[500px] overflow-y-scroll">
             {allComments.map((comment, index) => (

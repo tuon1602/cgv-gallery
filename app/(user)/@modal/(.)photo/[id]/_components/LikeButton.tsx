@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -9,7 +9,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 
 interface IProps {
   userId: string | undefined;
@@ -120,23 +120,17 @@ const LikeButton: React.FC<IProps> = ({ userId, imageId }) => {
   };
 
   return (
-    <button onClick={handleLikeButtonClick}>
-      {liked ? (
-        <FaHeart className="w-5 h-5 text-red-500" />
-      ) : (
-        <TooltipProvider delayDuration={10}>
-          <Tooltip>
-            <TooltipTrigger>
-              {" "}
-              <FaRegHeart className="w-5 h-5" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Like</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )}
-    </button>
+    <TooltipProvider delayDuration={10}>
+      <button onClick={handleLikeButtonClick} className="like-button">
+        {liked ? (
+          <FaHeart className="w-5 h-5 text-red-500" />
+        ) : (
+          <span>
+            <FaRegHeart className="w-5 h-5" />
+          </span>
+        )}
+      </button>
+    </TooltipProvider>
   );
 };
 

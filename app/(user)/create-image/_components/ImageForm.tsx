@@ -46,7 +46,7 @@ const ImageForm = () => {
     <>
       <form
         action={formAction}
-        className="p-5 grid grid-cols-2 max-w-[1000px] m-auto gap-5"
+        className="p-5 grid grid-cols-2 max-md:w-full md:w-2/3 xl:max-w-[700px] 2xl:max-w-[1000px] m-auto gap-5"
         ref={formRef}
       >
         <div>
