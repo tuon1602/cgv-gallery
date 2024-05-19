@@ -12,7 +12,7 @@ const CreatorAvatar = ({
   name: string;
 }) => {
   return (
-    <section className="w-fit px-2">
+    <section className="w-fit ">
       <Link href={`/profile/${userId}`} className="flex items-center gap-5">
         <Avatar className="w-16 h-16">
           <AvatarImage src={imageUrl} />

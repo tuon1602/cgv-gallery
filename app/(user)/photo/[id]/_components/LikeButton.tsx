@@ -126,16 +126,9 @@ const LikeButton: React.FC<IProps> = ({ userId, imageId }) => {
           {liked ? (
             <FaHeart className="w-5 h-5 text-red-500" />
           ) : (
-            <Tooltip>
-              <TooltipTrigger>
-                <span>
-                  <FaRegHeart className="w-5 h-5" />
-                </span>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Like</p>
-              </TooltipContent>
-            </Tooltip>
+            <span>
+              <FaRegHeart className="w-5 h-5" />
+            </span>
           )}
         </button>
       </TooltipProvider>
