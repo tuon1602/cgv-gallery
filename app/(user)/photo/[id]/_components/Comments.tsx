@@ -138,7 +138,7 @@ const Comments: React.FC<IProps> = ({
           </DialogTrigger>
           <DialogContent className="min-w-[400px] max-h-[500px] overflow-y-scroll">
             {allComments.map((comment, index) => (
-              <div>
+              <div key={comment.id}>
                 <Link
                   href={`/profile/${comment.commentedBy.userId}`}
                   className="flex items-center gap-2"
