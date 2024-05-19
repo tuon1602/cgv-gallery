@@ -37,7 +37,7 @@ export default function FaqPage() {
                 bạn khi đăng lên mình sẽ lưu vào google drive nhe hjhj
               </p>
               <p>Vì kinh phí có hạn nên các bạn nên đăng ảnh không nên trùng nhau nhé</p>
-              <p className="font-bold">Trong trường hợp xảy ra lỗi gì vui lòng liên hệ mình, link ở dưới :)</p>
+              <p className="font-bold text-destructive">Web vẫn đang trong quá trình phát triển nên sẽ không tránh khỏi lỗi, nếu gặp bất kì một lỗi gì vui lòng liên hệ mình nhé, link ở dưới :)</p>
             </CardContent>
             <CardContent>
               <Link href="https://www.facebook.com/TuonNguyen1602/">
