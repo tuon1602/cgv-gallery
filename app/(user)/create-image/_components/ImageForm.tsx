@@ -50,11 +50,13 @@ const ImageForm = () => {
         ref={formRef}
       >
         <div>
-          <Label>Title</Label>
+          <Label>
+            Title <span className="text-sm text-red-500">*</span>
+          </Label>
           <Input type="text" placeholder="Enter your title" name="title" />
         </div>
         <div className="col-span-2">
-          <Label>Description</Label>
+          <Label>Description  <span className="text-sm text-red-500">*</span></Label>
           <Textarea
             placeholder="Enter your description"
             name="description"
@@ -148,7 +150,6 @@ const ImageForm = () => {
         )} */}
         <SubmitButton />
       </form>
-      <Toaster position="top-center" richColors duration={1000} />
     </>
   );
 };

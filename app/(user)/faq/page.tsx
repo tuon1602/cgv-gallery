@@ -40,7 +40,7 @@ export default function FaqPage() {
               <p className="font-bold text-destructive">Web vẫn đang trong quá trình phát triển nên sẽ không tránh khỏi lỗi, nếu gặp bất kì một lỗi gì vui lòng liên hệ mình nhé, link ở dưới :)</p>
             </CardContent>
             <CardContent>
-              <Link href="https://www.facebook.com/TuonNguyen1602/">
+              <Link href="https://www.facebook.com/TuonNguyen1602/" target="_blank"> 
                 <h2 className="text-blue-500">Link của mình ( chủ page )</h2>
               </Link>
             </CardContent>

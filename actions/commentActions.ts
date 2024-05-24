@@ -42,26 +42,28 @@ export async function createComment(prevState: any, formData: FormData) {
     !rawData.userCommentId ||
     !rawData.imageId
   ) {
-    return { resetKey:Math.random(),message: "Missing params, try again" };
+    return { resetKey: Math.random(), message: "You need to type comment" };
+  }
+  if(typeof(rawData.content) === "string" && rawData.content.length>255){
+    return { resetKey: Math.random(), message: "Your comment is too long, please under 255 characters" };
+  }
+  const res = await fetch(`${process.env.API_URL}/comment`, {
+    method: "POST",
+    body: JSON.stringify({
+      content: rawData.content,
+      userId: rawData.userId,
+      userCommentId: userCommentId,
+      imageId: imageId,
+    }),
+  });
+  if (!res.ok) return { message: "Error creating comment" };
+  const data = await res.json();
+  console.log(data);
+  if (data.status === 200) {
+    revalidateTag("allComments");
+    revalidatePath("/");
+    return { message: "Created" };
   } else {
-    const res = await fetch(`${process.env.API_URL}/comment`, {
-      method: "POST",
-      body: JSON.stringify({
-        content: rawData.content,
-        userId: rawData.userId,
-        userCommentId: userCommentId,
-        imageId: imageId,
-      }),
-    });
-    if (!res.ok) return { message: "Error creating comment" };
-    const data = await res.json();
-    console.log(data)
-    if (data.status === 200) {
-      revalidateTag("allComments");
-      revalidatePath("/")
-      return {message:"Created"}
-    } else {
-      return {message: "Error creating comment" };
-    }
+    return { message: "Error creating comment" };
   }
 }

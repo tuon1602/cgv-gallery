@@ -59,12 +59,13 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
   const session = useSession();
   const pathname = usePathname();
   const [commentValue, setCommentValue] = useState<string>("");
+  const [copyStatus, setCopyStatus] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   // @ts-ignore
   const [state, action] = useFormState(createComment, undefined);
   const handleFocusInput = () => {
-    inputRef?.current?.focus();
+    inputRef.current?.focus();
   };
   const handleSetCommentValue = (event: ChangeEvent<HTMLInputElement>) => {
     setCommentValue(event.target.value);
@@ -241,13 +242,14 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                     <TooltipTrigger>
                       <Copy
                         className="cursor-pointer"
-                        onClick={() =>
-                          navigator.clipboard.writeText(window.location.href)
-                        }
+                        onClick={() => {
+                          navigator.clipboard.writeText(window.location.href);
+                          setCopyStatus(true);
+                        }}
                       />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Copy Url</p>
+                      {copyStatus ? <p>Copied!</p> : <p>Copy Url</p>}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -300,6 +302,7 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
           </div>
         </div>
       </section>
+      {/* for mobile */}
       <section className="lg:hidden p-5 relative h-full w-full">
         <X
           className="w-10 h-10 rounded-full absolute top-0 right-0 text-gray-500"
@@ -374,13 +377,14 @@ const PhotoDetails: React.FC<PhotoDetailsProps> = ({
                   {" "}
                   <Copy
                     className="cursor-pointer "
-                    onClick={() =>
-                      navigator.clipboard.writeText(window.location.href)
-                    }
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      setCopyStatus(true);
+                    }}
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Copy Url</p>
+                  <p>Copy url</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
