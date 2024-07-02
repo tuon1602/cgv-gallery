@@ -24,7 +24,10 @@ export default async function Home({
 }) {
   const imagesDateFilter = await getAllImageByDate(searchParams.date);
   const images = await getAllImageHomeData();
-  const session = await getServerSession(authOptions);
+  const [imagesDateFilterData, homeImages] = await Promise.all([
+    imagesDateFilter,
+    images,
+  ]);
   return (
     <main className="w-full p-5 flex flex-col items-center m-auto">
       <section className="flex flex-col lg:flex-row lg:justify-center lg:items-center gap-4 lg:gap-10 md:max-w-[500px] lg:max-w-[800px] w-full">
@@ -38,9 +41,8 @@ export default async function Home({
         {!searchParams ||
           (searchParams.date === "undefined" && (
             <Suspense fallback={<p>loading....</p>}>
-                <HomeImages imageData={images} />
+              <HomeImages imageData={homeImages} />
             </Suspense>
-          
           ))}
         {searchParams.date && searchParams.date != "undefined" && (
           <div>
@@ -52,7 +54,7 @@ export default async function Home({
                   {moment(searchParams.date).format("DD/MM/YYYY")}
                 </p>
                 <Suspense fallback={<p>loading....</p>}>
-                   <HomeImages imageData={imagesDateFilter} />
+                  <HomeImages imageData={imagesDateFilterData} />
                 </Suspense>
               </div>
             )}

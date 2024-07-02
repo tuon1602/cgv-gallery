@@ -75,12 +75,12 @@ export interface IUsers{
   message:string
   users:User[]
 }
-interface User{
+export interface User{
   id:number,
   userId:string,
   avatarUrl:string,
   name:string,
   role:string,
-  createdAt:string,
-  updatedAt:string
+  createdAt:Date,
+  updatedAt:Date
 }

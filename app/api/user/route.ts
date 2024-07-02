@@ -2,7 +2,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bycript from "bcrypt";
-import { revalidateTag } from "next/cache";
 
 const salt = 10;
 
@@ -81,5 +80,35 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ message: "Error deleting" });
   } catch (error) {
     return NextResponse.json({ message: "Error deleting" });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const url = new URL(req.url);
+  const id = url.searchParams.get("id");
+  if (id === null) {
+    return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
+  }
+  const data = await req.json();
+  if (!data) {
+    return NextResponse.json({ message: "No data" }, { status: 400 });
+  }
+  try {
+    const updateUser = await prisma.user.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        userId: data.userId,
+        name: data.name,
+        role: data.role,
+      },
+    });
+    if (updateUser) {
+      return NextResponse.json({ message: "Updated" });
+    }
+    return NextResponse.json({ message: "Error Updating" });
+  } catch (error) {
+    return NextResponse.json({ message: "Error Updating" });
   }
 }

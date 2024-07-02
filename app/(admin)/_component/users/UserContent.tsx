@@ -18,17 +18,6 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -66,16 +55,9 @@ import { revalidateTag } from "next/cache";
 import { toast } from "sonner";
 import { FormEvent, useEffect, useState } from "react";
 import clsx from "clsx";
-
-interface User {
-  name: string;
-  userId: string;
-  role: string;
-  avatarUrl: string;
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { User } from "@/types";
+import MobileNav from "../MobileNav";
+import EditUserForm from "./EditUserForm";
 
 interface IProps {
   usersData: any;
@@ -128,62 +110,9 @@ const UserContent = ({ usersData, adminsData, userFilterData }: IProps) => {
   return (
     <>
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button size="icon" variant="outline" className="sm:hidden">
-              <PanelLeft className="h-5 w-5" />
-              <span className="sr-only">Toggle Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="sm:max-w-xs">
-            <nav className="grid gap-6 text-lg font-medium">
-              <Link
-                href="#"
-                className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-              >
-                <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-                <span className="sr-only">Acme Inc</span>
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-              >
-                <Home className="h-5 w-5" />
-                Dashboard
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-              >
-                <ShoppingCart className="h-5 w-5" />
-                Orders
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-4 px-2.5 text-foreground"
-              >
-                <Package className="h-5 w-5" />
-                Products
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-              >
-                <Users2 className="h-5 w-5" />
-                Customers
-              </Link>
-              <Link
-                href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-              >
-                <LineChart className="h-5 w-5" />
-                Settings
-              </Link>
-            </nav>
-          </SheetContent>
-        </Sheet>
-        <div className="relative mr-auto flex-1 md:grow-0">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <MobileNav />
+        <div className="relative mr-auto flex-1 md:grow-0 flex items-center">
+          <Search className="absolute left-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search..."
@@ -203,30 +132,6 @@ const UserContent = ({ usersData, adminsData, userFilterData }: IProps) => {
               <TabsTrigger value="employee">User</TabsTrigger>
             </TabsList>
             <div className="ml-auto flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 gap-1">
-                    <ListFilter className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                      Filter
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem checked>
-                    Name
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Role</DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button size="sm" variant="outline" className="h-8 gap-1">
-                <File className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Export
-                </span>
-              </Button>
               <AddUserForm />
             </div>
           </div>
@@ -305,7 +210,7 @@ const UserContent = ({ usersData, adminsData, userFilterData }: IProps) => {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
                                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                                  <EditUserForm userData={user}/>
                                   <DropdownMenuItem
                                     onClick={() => handleConfirmDelete(user.id)}
                                   >
@@ -334,7 +239,7 @@ const UserContent = ({ usersData, adminsData, userFilterData }: IProps) => {
                             <TableCell className="hidden md:table-cell">
                               <Badge
                                 variant={
-                                  user.role === "admin" ? `default` : "outline"
+                                  user.role === "admin" ? `default` : "secondary"
                                 }
                               >
                                 {user.role}
@@ -439,7 +344,7 @@ const UserContent = ({ usersData, adminsData, userFilterData }: IProps) => {
                           25
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
-                          {moment(user.createdAt.toISOString()).format(
+                          {moment(user.createdAt.toString()).format(
                             "Do MMMM YYYY"
                           )}
                         </TableCell>
@@ -532,7 +437,7 @@ const UserContent = ({ usersData, adminsData, userFilterData }: IProps) => {
                           25
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
-                          {moment(user.createdAt.toISOString()).format(
+                          {moment(user.createdAt.toString()).format(
                             "Do MMMM YYYY"
                           )}
                         </TableCell>

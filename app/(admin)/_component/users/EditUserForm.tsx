@@ -35,17 +35,24 @@ import {
 import { CldUploadButton, CldUploadWidget } from "next-cloudinary";
 import { useState, ChangeEvent } from "react";
 import Image from "next/image";
-import { createUserSchema } from "@/constants/schema";
+import { editUserSchema } from "@/constants/schema";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Toaster } from "@/components/ui/sonner";
 
-export default function AddUserForm() {
+import { User } from "@/types";
+
+interface UserEditProps {
+  userData: User;
+}
+
+export default function EditUserForm({ userData }: UserEditProps) {
   const router = useRouter();
   const { reset } = useForm();
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [avatarDisplay, setAvatarDisplay] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleOpenDialog = () => {
     setOpenDialog((prev) => !prev);
@@ -62,57 +69,51 @@ export default function AddUserForm() {
       reader.readAsDataURL(file);
     }
   };
-  const form = useForm<z.infer<typeof createUserSchema>>({
-    resolver: zodResolver(createUserSchema),
+  const form = useForm<z.infer<typeof editUserSchema>>({
+    resolver: zodResolver(editUserSchema),
     defaultValues: {
-      userId: "",
-      password: "",
-      name: "",
-      role: "user",
-      avatarUrl:
-        "https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg",
+      userId: userData.userId,
+      name: userData.name,
+      role: userData.role,
     },
   });
-  async function onSubmit(values: z.infer<typeof createUserSchema>) {
+  async function onSubmit(values: z.infer<typeof editUserSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
-    const res = await fetch("/api/user", {
-      method: "POST",
+    //fetch api put
+    setLoading(true);
+    const res = await fetch(`/api/user?id=${userData.id}`, {
+      method: "PUT",
       body: JSON.stringify(values),
     });
     const data = await res.json();
     // console.log(data);
-    if (data.message === "success") {
-      router.refresh();
-      setOpenDialog(false);
-    }
-    if (data.message === "user created") {
-      toast.error("User created", {
+    if (data.message === "Updated") {
+      toast.success("User Updated, Vui lòng đợi xíu :3", {
+        duration: 1000,
+      });
+      setLoading(false);
+      setTimeout(() => {
+        router.refresh();
+        setOpenDialog(false);
+      }, 1000);
+    } else {
+      toast.error("There is something wrong, please try again", {
         duration: 1000,
       });
     }
-    toast.error("There is something wrong, please try again", {
-      duration: 1000,
-    });
   }
   return (
     <>
       <Dialog open={openDialog} onOpenChange={handleOpenDialog}>
         <DialogTrigger asChild>
-          <Button size="sm" className="h-8 gap-1">
-            <PlusCircle className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add User
-            </span>
+          <Button size="sm" variant="ghost" className="w-full justify-start">
+            Edit
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] md:max-w-[560px] lg:max-w-[780px]">
           <DialogHeader>
-            <DialogTitle>Add User</DialogTitle>
-            <DialogDescription>
-              Add a new user here. Click save when you`&apos;`re done.
-            </DialogDescription>
+            <DialogTitle>Edit User</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form
@@ -120,6 +121,7 @@ export default function AddUserForm() {
               className="grid grid-cols-2 gap-5"
             >
               <FormField
+                defaultValue={userData.name}
                 control={form.control}
                 name="name"
                 render={({ field }) => (
@@ -128,23 +130,6 @@ export default function AddUserForm() {
                     <FormControl>
                       <Input
                         placeholder="Ví dụ:  Nguyễn Minh Tuấn"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="max-md:col-span-2">
-                    <FormLabel>Mật khẩu</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Default: 123"
                         {...field}
                       />
                     </FormControl>
@@ -174,7 +159,7 @@ export default function AddUserForm() {
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        defaultValue={userData.role}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Role" />
@@ -189,41 +174,8 @@ export default function AddUserForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="avatarUrl"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel className="">Thêm ảnh</FormLabel>
-                    {avatarDisplay ? (
-                      <Image
-                        src={avatarDisplay}
-                        alt="avatar Immage preview"
-                        width={200}
-                        height={200}
-                      />
-                    ) : (
-                      <Image
-                        src="https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg"
-                        alt="avatar Immage preview"
-                        width={200}
-                        height={200}
-                      />
-                    )}
-                    <FormControl className="border py-[0.5rem] rounded-md">
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button className="col-span-2 uppercase" type="submit">
-                <Plus className="h-4 w-4" />
-                Add
+              <Button className="col-span-2 uppercase" type="submit" disabled={loading}>
+                {loading ? "Updating ...." :"Update"}
               </Button>
             </form>
           </Form>

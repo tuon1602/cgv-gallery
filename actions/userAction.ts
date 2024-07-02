@@ -42,6 +42,9 @@ export async function getAdmins() {
 
 export async function getUsers() {
   const users = await prisma.user.findMany({
+    where:{
+      role:"user"
+    },
     select: {
       id: true,
       userId: true,

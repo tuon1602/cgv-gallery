@@ -4,22 +4,23 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
-  userId      String        @unique
-  password    String        
-  avatarUrl   String        @default("https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg")
-  name        String
-  role        String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  images      Image[]       @relation("UserImages")
-  comments    UserComment[]
-  Like        Like[]
+  id        Int           @id @default(autoincrement())
+  userId    String        @unique
+  password  String
+  avatarUrl String        @default("https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg")
+  name      String
+  role      String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  images    Image[]       @relation("UserImages")
+  comments  UserComment[]
+  Like      Like[]
 }
 
 model Image {
@@ -62,6 +63,6 @@ model Like {
   imageId   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user  User  @relation(fields: [userId], references: [userId])
-  image Image @relation(fields: [imageId], references: [id])
+  user      User     @relation(fields: [userId], references: [userId])
+  image     Image    @relation(fields: [imageId], references: [id])
 }

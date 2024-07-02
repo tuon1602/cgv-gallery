@@ -9,6 +9,9 @@ export async function middleware(req: NextRequest) {
   if (process.env.NODE_ENV === "production" && !productSessionToken) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
+  // if (req.nextUrl.pathname.startsWith('/api') && !sessionToken) {
+  //   return NextResponse.json({message:"Not authorized",stats:403})
+  // }
 }
 
 export const config = {

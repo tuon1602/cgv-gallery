@@ -35,7 +35,7 @@ export default async function AdminLayout({
         <SideSelect slug={params.slug} />
       </nav>
       {children}
-      <Toaster />
+      <Toaster  richColors position="top-center"/>
     </section>
   );
 }

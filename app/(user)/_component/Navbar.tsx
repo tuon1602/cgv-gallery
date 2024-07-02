@@ -54,11 +54,11 @@ const Navbar = async () => {
               route="/?date=undefined"
               icon={<Home className="size-[30px]" />}
             />
-            <NavRoute
+            {/* <NavRoute
               label="Saved"
               route="/saved"
               icon={<Heart className="size-[30px]" />}
-            />
+            /> */}
             <NavRoute
               label="Create"
               route="/create-image"

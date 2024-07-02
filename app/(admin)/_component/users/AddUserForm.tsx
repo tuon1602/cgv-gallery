@@ -84,17 +84,19 @@ export default function AddUserForm() {
     const data = await res.json();
     // console.log(data);
     if (data.message === "success") {
+      form.reset()
       router.refresh();
       setOpenDialog(false);
     }
-    if (data.message === "user created") {
+    if (data.message === "success") {
       toast.error("User created", {
         duration: 1000,
       });
+    } else {
+      toast.error("There is something wrong, please try again", {
+        duration: 1000,
+      });
     }
-    toast.error("There is something wrong, please try again", {
-      duration: 1000,
-    });
   }
   return (
     <>

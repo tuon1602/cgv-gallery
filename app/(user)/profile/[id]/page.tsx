@@ -8,17 +8,11 @@ import UserImages from "./_component/UserImages";
 import { Toaster } from "@/components/ui/sonner";
 import { IUsers } from "@/types";
 
-export async function generateStaticParams() {
-  const users: any = await getUsers();
-  return users.map((user: any) => ({
-    id: user.userId,
-  }));
-}
-
 const ProfilePage = async ({ params }: { params: { id: string } }) => {
-  const userData = await getUserById(params.id);
+  const userDataDetail = getUserById(params.id);
   const session = await getServerSession(authOptions);
-  const userAvatar = await getUserAvatar(params.id);
+  const userAvatarDetail = getUserAvatar(params.id);
+  const [userData,userAvatar] = await Promise.all([userDataDetail,userAvatarDetail])
   return (
     <div className="flex items-center w-full h-full mt-5 flex-col space-y-5 max-w-[1000px] m-auto">
       {/* allow user to change avatar */}
